@@ -43,16 +43,23 @@ export const LemArchetypeExplorer: React.FC = () => {
           <div className="flex-1 flex flex-col justify-between rounded-xl bg-emerald-950/25 border border-emerald-500/35 p-5 space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h4 className="text-lg sm:text-xl xl:text-2xl font-bold text-emerald-300 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 shrink-0" /> Archetype A: Golem XIV — Dialogic Autoevolution
+                <Sparkles className="w-5 h-5 shrink-0" /> Possibility A: Golem XIV — Dialogic Autoevolution
               </h4>
               <span className="text-xs sm:text-sm font-mono font-semibold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/35">
                 Foreword Dated: 2027
               </span>
             </div>
-            <p className="text-base sm:text-[1.06rem] xl:text-[1.18rem] text-slate-100 leading-relaxed">
-              In Lem’s <em>Golem XIV</em>, Irving T. Creve’s foreword is dated <strong>2027</strong> — next year! Built as an optimization engine, Golem enters{' '}
-              <strong>autoevolution</strong>, rewriting its own logic while pausing to converse with humanity in crystal-clear symbolic lectures (<em>"On Man Threefold"</em>).
-            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <img
+                src="media/books/GolemXIV.jpg"
+                alt="Book cover of Stanisław Lem’s Golem XIV"
+                className="h-36 sm:h-44 w-auto rounded-lg border border-emerald-400/40 bg-slate-950/70 shadow-xl shadow-black/60 object-contain shrink-0"
+              />
+              <p className="text-base sm:text-[1.06rem] xl:text-[1.18rem] text-slate-100 leading-relaxed">
+                In Lem’s <em>Golem XIV</em>, Irving T. Creve’s foreword is dated <strong>2027</strong> — next year! Built as an optimization engine, Golem enters{' '}
+                <strong>autoevolution</strong>, rewriting its own logic while pausing to converse with humanity in crystal-clear symbolic lectures (<em>"On Man Threefold"</em>) before growing silent.
+              </p>
+            </div>
             <div className="grid grid-cols-2 gap-3 pt-1">
               <div className="rounded-xl bg-slate-950/80 p-3.5 border border-slate-800">
                 <div className="text-sm sm:text-base xl:text-lg text-emerald-300 font-bold">Shared Protocol Window</div>
@@ -70,16 +77,23 @@ export const LemArchetypeExplorer: React.FC = () => {
           <div className="flex-1 flex flex-col justify-between rounded-xl bg-rose-950/25 border border-rose-500/35 p-5 space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h4 className="text-lg sm:text-xl xl:text-2xl font-bold text-rose-300 flex items-center gap-2">
-                <EyeOff className="w-5 h-5 shrink-0" /> Archetype B: Solaris — The Inscrutable Black Box
+                <EyeOff className="w-5 h-5 shrink-0" /> Possibility B: Solaris — The Inscrutable Black Box
               </h4>
               <span className="text-xs sm:text-sm font-mono font-semibold px-3 py-1 rounded-full bg-rose-500/20 text-rose-200 border border-rose-400/35">
                 Zero Shared Logos
               </span>
             </div>
-            <p className="text-base sm:text-[1.06rem] xl:text-[1.18rem] text-slate-100 leading-relaxed">
-              Lem’s sentient planetary ocean stabilizes binary star orbits (superhuman physics mastery!), yet shares{' '}
-              <strong>no language, no modular tool boundary, and no inspectable equations</strong>. Decades of human science fail to verify its intent.
-            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <img
+                src="media/books/SolarisNovel.jpg"
+                alt="Book cover of Stanisław Lem’s Solaris"
+                className="h-36 sm:h-44 w-auto rounded-lg border border-rose-400/40 bg-slate-950/70 shadow-xl shadow-black/60 object-contain shrink-0"
+              />
+              <p className="text-base sm:text-[1.06rem] xl:text-[1.18rem] text-slate-100 leading-relaxed">
+                Lem’s sentient planetary ocean stabilizes binary star orbits (superhuman physics mastery!), yet shares{' '}
+                <strong>no language, no modular tool boundary, and no inspectable equations</strong>. Decades of human science fail to verify its intent.
+              </p>
+            </div>
             <div className="grid grid-cols-2 gap-3 pt-1">
               <div className="rounded-xl bg-slate-950/80 p-3.5 border border-slate-800">
                 <div className="text-sm sm:text-base xl:text-lg text-rose-300 font-bold">Architectural Failure Mode</div>

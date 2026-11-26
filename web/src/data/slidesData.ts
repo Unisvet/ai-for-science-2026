@@ -397,6 +397,16 @@ export const SLIDES_DATA: SlideDefinition[] = [
       'Solaris (1961) • Another Possibility: Superhuman mastery with zero shared language or inspectable equations — reminding us never to surrender oversight to opaque black boxes.',
       'Our 2027 Path • Responsibility & Adventure: Neither destiny is fixed. In 2027, let us build with responsibility, chase genuine scientific adventure, and turn every failure (`-inf`) into learning! ✨',
     ],
+    bulletImages: {
+      0: {
+        src: 'media/books/GolemXIV.jpg',
+        alt: 'Book cover of Stanisław Lem’s Golem XIV',
+      },
+      1: {
+        src: 'media/books/SolarisNovel.jpg',
+        alt: 'Book cover of Stanisław Lem’s Solaris',
+      },
+    },
     metrics: [
       { label: 'Lem’s 2027 Horizons', value: 'Golem XIV & Solaris', accent: 'purple' },
       { label: 'Our Engineering Choice', value: 'Human Responsibility', accent: 'cyan' },

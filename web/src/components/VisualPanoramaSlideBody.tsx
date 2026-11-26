@@ -60,14 +60,16 @@ export const VisualPanoramaSlideBody: React.FC<{
       {/* Full-Width Panoramic Artwork Stage */}
       <div
         className={`relative w-full flex-1 rounded-2xl overflow-hidden border border-white/15 bg-[#050814] shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex flex-col justify-end ${
-          staticPrint ? 'min-h-0' : 'min-h-[360px] lg:min-h-[400px]'
+          staticPrint
+            ? 'aspect-[16/8.2] min-h-[420px] lg:min-h-[500px] print:aspect-auto print:min-h-0'
+            : 'min-h-[360px] lg:min-h-[400px]'
         }`}
       >
         {slide.illustration && (
           <img
             src={slide.illustration.src}
             alt={slide.illustration.alt}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
         )}
 
@@ -96,13 +98,17 @@ export const VisualPanoramaSlideBody: React.FC<{
         )}
 
         {/* Bottom Gradient Scrim for Crisp Projector Contrast */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[56%] bg-gradient-to-t from-[#040711]/95 via-[#040711]/65 to-transparent z-10" />
+        <div
+          className={`pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#040711]/95 via-[#040711]/60 to-transparent z-10 ${
+            staticPrint ? 'h-[45%]' : 'h-[56%]'
+          }`}
+        />
 
         {/* Aligned Epoch Strip Anchored Directly Under Each Visual Panel */}
         {epochs.length > 0 && (
           <div
             className={`relative z-20 grid ${gridColsClass} ${
-              staticPrint ? 'gap-2.5 p-3' : 'gap-2.5 xl:gap-3.5 p-3.5 sm:p-4 xl:p-5'
+              staticPrint ? 'gap-2 p-2.5' : 'gap-2.5 xl:gap-3.5 p-3.5 sm:p-4 xl:p-5'
             }`}
           >
             {epochs.map((ep, idx) => {

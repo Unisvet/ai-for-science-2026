@@ -380,7 +380,34 @@ export const SLIDES_DATA: SlideDefinition[] = [
     illustration: {
       src: 'media/slides/slide-11-blueprint-au.png',
       alt: 'Dawn breaking over a futuristic Australian coastal skyline with glowing cyan neural fiber bridges, emerald code lattices, and a violet TPU monolith',
-      caption: 'Thank You, GDG Australia! • Build Resilient, Self-Improving Agents on Google Cloud TPUs (Press I for Quickstart Links)',
+      caption: 'GDG Australia • Build Resilient, Self-Improving Agents on Google Cloud TPUs (Press I for Quickstart Links)',
+    },
+  },
+  {
+    id: 'slide-13-lem-2027',
+    number: 13,
+    act: 'Epilogue • Happy New Year 2027',
+    timeRange: '49:00 – 50:00',
+    title: 'Happy New Year 2027: Stanisław Lem’s Prophecy Arrives',
+    subtitle: 'Golem XIV (2027) vs. Solaris (1961) — Choosing Verifiable Autoevolution',
+    keyTakeaway:
+      'In Stanisław Lem’s *Golem XIV*, the foreword is dated **2027** — the year a self-evolving intelligence rewrites its own logic yet still *converses with humanity*. Stepping into 2027, our engineering choice is clear: build **Golem-class verifiable autoevolution**, never an inscrutable **Solaris** black box.',
+    bullets: [
+      'Golem XIV (2027) • Dialogic Autoevolution: Rewrites its own algorithms (`AlphaEvolve` inside `# EVOLVE-BLOCK`) while staying legible — sharing readable Python/JAX diffs, proofs, and structured dialogue (`Antigravity` + `MCP`).',
+      'Solaris (1961) • The Inscrutable Ocean: Achieves superhuman physics mastery yet shares zero language, modular boundary, or inspectable equations — a warning against unverified black-box autonomy.',
+      'Our 2027 Engineering Wish: May every self-improving agent you build in 2027 be auditable, deterministic, and human-legible — advancing science together! ✨',
+    ],
+    metrics: [
+      { label: 'Lem’s Golem XIV', value: 'Foreword: 2027', accent: 'emerald' },
+      { label: 'Anti-Solaris Rule', value: 'Readable # EVOLVE-BLOCK', accent: 'cyan' },
+      { label: 'Wishing You', value: 'Happy New Year 2027!', accent: 'amber' },
+    ],
+    deepDiveTerms: ['alphaevolve', 'evolve-block', 'antigravity'],
+    widget: 'lem-agi-matrix',
+    illustration: {
+      src: 'media/slides/slide-13-lem-2027.png',
+      alt: 'Cosmic 2027 midnight horizon contrasting an emerald-cyan crystalline Golem XIV bridge of readable light on the left with a swirling amber-crimson Solaris alien ocean on the right',
+      caption: 'Happy New Year 2027! • Build Transparent Golems, Never Silent Solari (Press I to Explore Lem’s Two Horizons)',
     },
   },
 ];

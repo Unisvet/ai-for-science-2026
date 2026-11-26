@@ -11,7 +11,7 @@ Humans shaped science through **conversation** (*Homo Loquens*) and **tools** (*
 
 ```text
 ai-for-science-2026/
-├── web/                                       # Unified Interactive 12-Slide Deck, Demos Lab, Video Hub & PDF
+├── web/                                       # Unified Interactive 13-Slide Deck, Demos Lab, Video Hub & PDF
 │   ├── src/
 │   │   ├── components/                        # React 19 + TypeScript + Tailwind + 2D/3D Visualizers + Audio
 │   │   └── data/
@@ -44,7 +44,7 @@ npm run dev
 ```
 
 - **Keyboard Shortcuts in Deck Mode:** `→` / `Space` (Next), `←` (Prev), `I` (Toggle Illustration / Interactive View), `O` (Overview Grid), `M` (Harmonic Web Audio Transition Chimes), `C` (Cinema Mode), `F` (Fullscreen), `P` (16:9 Organizer PDF Export).
-- **Exporting the 12-Slide Organizer PDF Backup:** Click **`Organizer PDF`** in the top bar → **`Save as 16:9 PDF`** (*Background graphics: Enabled*, *Margins: None*).
+- **Exporting the 13-Slide Organizer PDF Backup:** Click **`Organizer PDF`** in the top bar → **`Save as 16:9 PDF`** (*Background graphics: Enabled*, *Margins: None*).
 
 ### 2. Run the Python Companion Demos (`demos/`)
 

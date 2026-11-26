@@ -1,0 +1,49 @@
+{
+  "note": "Sanitized example output from an AlphaEvolve n=26 Circle Packing run. Live runs write to gitignored outputs/.",
+  "timestamp_utc": "20261126_014752",
+  "run_dir": "demos/alphaevolve_circle_packing/example_outputs",
+  "experiment_name": "projects/<YOUR_PROJECT_NUMBER>/locations/global/collections/default_collection/engines/<YOUR_GE_APP_ID>/sessions/example-session-01/alphaEvolveExperiments/example-exp-01",
+  "models": [
+    {
+      "name": "gemini-4-argon",
+      "weight": 0.65
+    },
+    {
+      "name": "gemini-4-hydrogen",
+      "weight": 0.35
+    }
+  ],
+  "context_enabled": true,
+  "eval_timeout_s": 20.0,
+  "idle_timeout_s": 300,
+  "max_programs_generated": 30,
+  "max_programs_evaluated": 30,
+  "concurrency": 4,
+  "worker_concurrency": 4,
+  "parallel_evaluation": true,
+  "total_runtime_s": 604.79,
+  "evolution_loop_s": 550.16,
+  "evaluations_recorded": 30,
+  "avg_eval_latency_ms": 6842.13,
+  "best_score": 2.63598,
+  "leaderboard": [
+    {
+      "rank": 1,
+      "program_id": "example-prog-001",
+      "name": "projects/<YOUR_PROJECT_NUMBER>/locations/global/collections/default_collection/engines/<YOUR_GE_APP_ID>/sessions/example-session-01/alphaEvolveExperiments/example-exp-01/alphaEvolvePrograms/example-prog-001",
+      "score": 2.63598
+    },
+    {
+      "rank": 2,
+      "program_id": "example-prog-002",
+      "name": "projects/<YOUR_PROJECT_NUMBER>/locations/global/collections/default_collection/engines/<YOUR_GE_APP_ID>/sessions/example-session-01/alphaEvolveExperiments/example-exp-01/alphaEvolvePrograms/example-prog-002",
+      "score": 2.63541
+    },
+    {
+      "rank": 3,
+      "program_id": "example-prog-003",
+      "name": "projects/<YOUR_PROJECT_NUMBER>/locations/global/collections/default_collection/engines/<YOUR_GE_APP_ID>/sessions/example-session-01/alphaEvolveExperiments/example-exp-01/alphaEvolvePrograms/example-prog-003",
+      "score": 2.63412
+    }
+  ]
+}

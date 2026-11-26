@@ -24,7 +24,7 @@ uv run --project demos python -m demos.alphaevolve_circle_packing.run_evolution
 - **Cloud LLM Mutation (`acquire_programs`):** Google Cloud Discovery Engine mutates *only* inside `# EVOLVE-BLOCK-START ... # EVOLVE-BLOCK-END` using your configured Gemini model mixture (`MODEL_1`, `MODEL_2`).
   - **Verified Working Models on AlphaEvolve Discovery Engine:** `gemini-4-argon` (default when `MODEL_1`/`MODEL_2` are left blank) and `gemini-4-hydrogen` (e.g., `MODEL_1=gemini-4-hydrogen` + `MODEL_2=gemini-4-argon`, or single-model `weight=1.0`).
 - **User-Controlled Evaluation (`submit_program_evaluations`):** `run_controller_loop` pulls candidates, runs `evaluate.py`, and submits numeric scores + textual failure insights back to the MAP-Elites islands.
-- **Automatic Outputs (`outputs/`):** Every run saves `outputs/program_evolved.py` (best candidate), `outputs/results.json` (runtime, loop duration, per-candidate eval latency, and ranked leaderboard), and `outputs/rank_1_packing.png` … `rank_3_packing.png`.
+- **Automatic Outputs (`outputs/`, gitignored):** Every live run saves `outputs/program_evolved.py` (best candidate), `outputs/results.json` (runtime, loop duration, per-candidate eval latency, and ranked leaderboard), and `outputs/rank_1_packing.png` … `rank_3_packing.png`. A sanitized reference copy is included in **`example_outputs/`** so you can inspect and diff `program.py` vs. `example_outputs/program_evolved.py` without running a cloud job first.
 - **Typical Cloud Discovery Time:** ~3–6 minutes for 10 candidates (reaching `2.634–2.636` live!), or ~15–30 minutes over 30–60+ candidates to push beyond AlphaEvolve's `2.63586` SOTA.
 
 ### Tuning & Improvement Levers

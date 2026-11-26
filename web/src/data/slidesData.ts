@@ -226,7 +226,7 @@ export const SLIDES_DATA: SlideDefinition[] = [
     deepDiveTerms: ['alphaevolve', 'evolve-block', 'antigravity', 'gemini-enterprise'],
     widget: 'alphaevolve-architecture',
     illustration: {
-      src: 'media/slides/slide-07-alphaevolve-loop.png',
+      src: 'media/slides/slide-06-alphaevolve-loop.png',
       alt: 'Upper cloud Gemini constellations mutating code prisms across islands and a lower evaluation vault scoring candidates',
       caption: 'Managed Cloud Mutation (Gemini Argon & Hydrogen) × User-Controlled Evaluation (evaluate.py) — Press I for Interactive Lab',
     },
@@ -253,7 +253,7 @@ export const SLIDES_DATA: SlideDefinition[] = [
     deepDiveTerms: ['gemini-enterprise', 'gcloud-adc', 'alphaevolve'],
     widget: 'gemini-enterprise-explorer',
     illustration: {
-      src: 'media/slides/slide-14-governance.png',
+      src: 'media/slides/slide-07-governance.png',
       alt: 'Gemini Enterprise governance shield protecting Discovery Engine evolutionary loops, ADK agents, and Model Armor boundaries',
       caption: 'Gemini Enterprise Agent Platform — Press I for Official AlphaEvolve Overview & Governance Explorer',
     },
@@ -302,7 +302,7 @@ export const SLIDES_DATA: SlideDefinition[] = [
     deepDiveTerms: ['alphaevolve', 'evolve-block'],
     widget: 'demo-evofedagg-ccnc',
     illustration: {
-      src: 'media/slides/slide-08-evofedagg-maxwell.png',
+      src: 'media/slides/slide-09-evofedagg-maxwell.png',
       alt: 'IoT edge chambers emitting cyan momentum streams and crimson Byzantine entropy filtered by an emerald crystalline Maxwell’s Demon gatekeeper before reaching a violet cloud core',
       caption: 'IEEE CCNC 2027 Evo-FedAgg — Maxwell’s Demon Sorting Honest Momentum from Byzantine Entropy',
     },
@@ -378,7 +378,7 @@ export const SLIDES_DATA: SlideDefinition[] = [
     deepDiveTerms: ['antigravity', 'alphaevolve', 'cloud-tpus'],
     widget: 'closing-blueprint',
     illustration: {
-      src: 'media/slides/slide-11-blueprint-au.png',
+      src: 'media/slides/slide-12-blueprint-au.png',
       alt: 'Dawn breaking over a futuristic Australian coastal skyline with glowing cyan neural fiber bridges, emerald code lattices, and a violet TPU monolith',
       caption: 'GDG Australia • Build Resilient, Self-Improving Agents on Google Cloud TPUs (Press I for Quickstart Links)',
     },

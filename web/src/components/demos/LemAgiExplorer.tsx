@@ -68,7 +68,7 @@ export const LemArchetypeExplorer: React.FC = () => {
               <div className="rounded-xl bg-slate-950/80 p-3.5 border border-slate-800">
                 <div className="text-sm sm:text-base xl:text-lg text-cyan-300 font-bold">2026–2027 Realization</div>
                 <div className="text-sm xl:text-[15.5px] text-slate-200 mt-1 leading-snug">
-                  <FormattedText text="Antigravity + AlphaEvolve `# EVOLVE-BLOCK` + provable Evo-FedAgg code." />
+                  <FormattedText text="Antigravity + AlphaEvolve `# EVOLVE-BLOCK`." />
                 </div>
               </div>
             </div>

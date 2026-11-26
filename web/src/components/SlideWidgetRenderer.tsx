@@ -144,7 +144,7 @@ export const SlideWidgetRenderer: React.FC<{
           <div className="flex-1 min-h-0 flex flex-col justify-between gap-3">
             <div className="relative h-44 xl:h-52 w-full rounded-xl overflow-hidden border border-white/15 bg-[#060911] shrink-0">
               <img
-                src="media/slides/slide-11-blueprint-au.png"
+                src="media/slides/slide-12-blueprint-au.png"
                 alt="Futuristic Australian coastal skyline at dawn with neural fiber bridges and TPU monolith"
                 className="w-full h-full object-cover"
               />

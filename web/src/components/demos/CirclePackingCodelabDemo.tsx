@@ -152,10 +152,10 @@ export const CirclePackingCodelabDemo: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full justify-between rounded-2xl bg-slate-900/85 border border-cyan-500/35 p-4 xl:p-5 shadow-xl gap-3">
+    <div className="flex flex-col h-full min-h-0 justify-between rounded-2xl bg-slate-900/85 border border-cyan-500/35 p-3.5 xl:p-4 shadow-xl gap-2.5 overflow-hidden">
       <div className="flex-1 flex flex-col min-h-0">
         {/* Header Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-800 shrink-0">
+        <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-800 shrink-0">
           <div className="flex items-center gap-1.5 flex-wrap">
             {MILESTONES.map((m, idx) => (
               <button
@@ -165,7 +165,7 @@ export const CirclePackingCodelabDemo: React.FC = () => {
                   setSelectedIdx(idx);
                   soundEngine.playEvolutionPulse(idx + 1);
                 }}
-                className={`px-3 py-1 rounded-lg text-xs sm:text-sm xl:text-[15px] font-mono font-bold transition border ${
+                className={`px-2.5 py-1 rounded-lg text-xs sm:text-[13px] font-mono font-bold transition border ${
                   selectedIdx === idx
                     ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400/60'
                     : 'bg-slate-950 text-slate-300 border-slate-800 hover:text-white'
@@ -176,65 +176,65 @@ export const CirclePackingCodelabDemo: React.FC = () => {
             ))}
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5 flex-wrap">
             <button
               type="button"
               onClick={() => setShowAeModal(true)}
               title="How a real Google Cloud AlphaEvolve (ae) experiment works"
-              className="no-print inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs sm:text-sm font-mono font-bold bg-amber-500/15 hover:bg-amber-500/25 text-amber-200 border border-amber-400/45 transition"
+              className="no-print inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-amber-500/15 hover:bg-amber-500/25 text-amber-200 border border-amber-400/45 transition"
             >
-              <Cloud className="w-4 h-4" /> How ae Works
+              <Cloud className="w-3.5 h-3.5" /> How ae Works
             </button>
             <button
               type="button"
               onClick={handleLiveRelax}
               title="Run 30 steps of live repulsive physics + radius clamping right in browser"
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs sm:text-sm font-mono font-bold bg-purple-500/20 hover:bg-purple-500/30 text-purple-200 border border-purple-400/45 transition"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-purple-500/20 hover:bg-purple-500/30 text-purple-200 border border-purple-400/45 transition"
             >
-              <Wand2 className="w-4 h-4" /> + Live Relax
+              <Wand2 className="w-3.5 h-3.5" /> + Live Relax
             </button>
             <button
               type="button"
               onClick={autoEvolve}
               disabled={isAutoPlaying}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-lg text-xs sm:text-sm font-bold bg-emerald-400 hover:bg-emerald-300 text-slate-950 transition disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-emerald-400 hover:bg-emerald-300 text-slate-950 transition disabled:opacity-50"
             >
-              <Play className="w-4 h-4" />
+              <Play className="w-3.5 h-3.5" />
               {isAutoPlaying ? 'Evolving...' : 'Auto-Evolve'}
             </button>
           </div>
         </div>
 
         {/* Metrics Strip */}
-        <div className="grid grid-cols-4 gap-2.5 my-2.5 shrink-0">
-          <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2">
-            <div className="text-xs sm:text-[13px] font-mono text-slate-300">∑ Radii (n=26)</div>
-            <div className="text-base sm:text-lg xl:text-2xl font-extrabold font-mono text-emerald-300 mt-0.5">{sumOfRadii.toFixed(4)}</div>
+        <div className="grid grid-cols-4 gap-2 my-2 shrink-0">
+          <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-2.5 py-1.5">
+            <div className="text-[11px] xl:text-xs font-mono text-slate-300">∑ Radii (n=26)</div>
+            <div className="text-base xl:text-xl font-extrabold font-mono text-emerald-300 mt-0.5">{sumOfRadii.toFixed(4)}</div>
           </div>
-          <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2">
-            <div className="text-xs sm:text-[13px] font-mono text-slate-300">Gain vs Seed</div>
-            <div className="text-base sm:text-lg xl:text-2xl font-extrabold font-mono text-cyan-300 mt-0.5">+{gainPct}%</div>
+          <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-2.5 py-1.5">
+            <div className="text-[11px] xl:text-xs font-mono text-slate-300">Gain vs Seed</div>
+            <div className="text-base xl:text-xl font-extrabold font-mono text-cyan-300 mt-0.5">+{gainPct}%</div>
           </div>
-          <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2">
-            <div className="text-xs sm:text-[13px] font-mono text-slate-300">Square Area</div>
-            <div className="text-base sm:text-lg xl:text-2xl font-extrabold font-mono text-purple-300 mt-0.5">{areaCoveragePct.toFixed(1)}%</div>
+          <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-2.5 py-1.5">
+            <div className="text-[11px] xl:text-xs font-mono text-slate-300">Square Area</div>
+            <div className="text-base xl:text-xl font-extrabold font-mono text-purple-300 mt-0.5">{areaCoveragePct.toFixed(1)}%</div>
           </div>
-          <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2">
-            <div className="text-xs sm:text-[13px] font-mono text-slate-300">Verifier Check</div>
-            <div className="text-sm sm:text-base xl:text-lg font-extrabold font-mono text-emerald-300 mt-1 flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 shrink-0" /> 0 Overlaps
+          <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-2.5 py-1.5">
+            <div className="text-[11px] xl:text-xs font-mono text-slate-300">Verifier Check</div>
+            <div className="text-xs sm:text-sm xl:text-base font-extrabold font-mono text-emerald-300 mt-0.5 flex items-center gap-1">
+              <CheckCircle2 className="w-3.5 h-3.5 shrink-0" /> 0 Overlaps
             </div>
           </div>
         </div>
 
         {/* Split: 2D Unit Square [0,1]^2 Visualizer + # EVOLVE-BLOCK Code */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch min-h-0">
-          <div className="lg:col-span-5 xl:col-span-4 rounded-xl bg-slate-950 border border-slate-800 p-3 flex flex-col items-center justify-between">
-            <div className="w-full flex items-center justify-between text-xs sm:text-sm font-mono text-slate-300 mb-1.5 px-0.5">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-stretch min-h-0">
+          <div className="lg:col-span-5 xl:col-span-4 rounded-xl bg-slate-950 border border-slate-800 p-2.5 flex flex-col items-center justify-between min-h-0">
+            <div className="w-full flex items-center justify-between text-xs font-mono text-slate-300 mb-1 px-0.5 shrink-0">
               <span>Unit Square [0, 1]²</span>
               <span className="text-cyan-300 font-bold">n = 26</span>
             </div>
-            <svg viewBox="-0.03 -0.03 1.06 1.06" className="w-full max-w-[240px] xl:max-w-[260px] aspect-square my-auto">
+            <svg viewBox="-0.03 -0.03 1.06 1.06" className="w-full max-w-[210px] xl:max-w-[235px] aspect-square my-auto">
               {/* Square boundary & subtle 5x5 guide grid */}
               <rect
                 x="0"
@@ -274,20 +274,20 @@ export const CirclePackingCodelabDemo: React.FC = () => {
             </svg>
           </div>
 
-          <div className="lg:col-span-7 xl:col-span-8 rounded-xl bg-slate-950 border border-slate-800 p-3.5 flex flex-col justify-between min-w-0">
-            <div className="min-w-0">
-              <div className="flex items-center justify-between gap-2 text-sm xl:text-base font-mono mb-2">
+          <div className="lg:col-span-7 xl:col-span-8 rounded-xl bg-slate-950 border border-slate-800 p-3 flex flex-col justify-between min-w-0 min-h-0">
+            <div className="min-w-0 flex-1 flex flex-col min-h-0">
+              <div className="flex items-center justify-between gap-2 text-xs sm:text-sm font-mono mb-1.5 shrink-0">
                 <span className="text-cyan-300 font-bold truncate">{baseMilestone.label}</span>
-                <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/35 text-xs sm:text-sm shrink-0">
+                <span className="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/35 text-[11px] shrink-0">
                   program.py
                 </span>
               </div>
-              <pre className="text-xs sm:text-[13px] xl:text-[14px] 2xl:text-[14.5px] leading-relaxed font-mono text-slate-100 whitespace-pre-wrap break-words">
+              <pre className="flex-1 min-h-0 overflow-y-auto text-[11.5px] sm:text-xs xl:text-[13px] leading-snug font-mono text-slate-100 whitespace-pre-wrap break-words">
                 {baseMilestone.code}
               </pre>
             </div>
 
-            <div className="pt-2.5 mt-2 border-t border-slate-800/90 flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-mono">
+            <div className="pt-2 mt-1.5 border-t border-slate-800/90 flex flex-wrap items-center justify-between gap-2 text-xs font-mono shrink-0">
               <a
                 href="https://codelabs.developers.google.com/alphaevolve-on-google-cloud-1#0"
                 target="_blank"
@@ -309,8 +309,8 @@ export const CirclePackingCodelabDemo: React.FC = () => {
         </div>
       </div>
 
-      <div className="rounded-xl bg-cyan-950/35 border border-cyan-500/30 px-4 py-2.5 text-sm sm:text-[15px] xl:text-base text-slate-100 flex items-start gap-2.5 leading-snug shrink-0">
-        <Sparkles className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
+      <div className="rounded-xl bg-cyan-950/35 border border-cyan-500/30 px-3.5 py-2 text-xs sm:text-[13px] xl:text-sm text-slate-100 flex items-start gap-2 leading-snug shrink-0">
+        <Sparkles className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
         <span>
           {liveOverride
             ? `Live Browser Physics Polish applied! Verified zero-overlap sum_of_radii = ${sumOfRadii.toFixed(4)} (${areaCoveragePct.toFixed(1)}% unit-square area).`

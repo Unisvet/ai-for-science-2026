@@ -148,35 +148,35 @@ export const TpuPallasSimulatorDemo: React.FC = () => {
 
 export const TpuBifurcationRoadmapWidget: React.FC = () => {
   return (
-    <div className="flex flex-col h-full justify-between rounded-2xl bg-slate-900/75 border border-purple-500/30 p-5 xl:p-6 gap-3">
-      <div className="flex-1 flex flex-col justify-between gap-3">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="text-sm xl:text-base font-mono font-bold uppercase tracking-wider text-purple-300 flex items-center gap-2">
-            <Cpu className="w-5 h-5" /> AI Hypercomputer Silicon Roadmap
+    <div className="flex flex-col h-full min-h-0 justify-between rounded-2xl bg-slate-900/75 border border-purple-500/30 p-4 xl:p-5 gap-2.5 overflow-hidden">
+      <div className="flex-1 flex flex-col justify-between gap-2.5 min-h-0">
+        <div className="flex flex-wrap items-center justify-between gap-2 shrink-0">
+          <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-purple-300 flex items-center gap-2">
+            <Cpu className="w-4 h-4" /> AI Hypercomputer Silicon Roadmap
           </span>
-          <span className="text-xs sm:text-sm font-mono font-semibold text-cyan-300">Google Cloud Tech • Future of AI Infra</span>
+          <span className="text-xs font-mono font-semibold text-cyan-300">Google Cloud Tech • Future of AI Infra</span>
         </div>
 
-        <div className="flex-1 flex flex-col justify-between gap-2.5">
+        <div className="flex-1 flex flex-col justify-between gap-2 min-h-0">
           {TPU_GENERATIONS_DATA.map((tpu) => (
             <div
               key={tpu.id}
-              className="flex-1 rounded-xl bg-slate-950/85 border border-slate-800 px-4 py-3 flex items-center justify-between gap-3"
+              className="flex-1 rounded-xl bg-slate-950/85 border border-slate-800 px-3.5 py-2 flex items-center justify-between gap-3"
             >
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-base xl:text-lg font-bold text-white">{tpu.name}</span>
-                  <span className="text-xs font-mono px-2.5 py-0.5 rounded-md bg-purple-500/15 text-purple-200 border border-purple-500/35">
+                  <span className="text-sm sm:text-base font-bold text-white">{tpu.name}</span>
+                  <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-purple-500/15 text-purple-200 border border-purple-500/35">
                     {tpu.badge}
                   </span>
                 </div>
-                <p className="text-sm xl:text-[15px] text-slate-300 mt-1 leading-snug">
+                <p className="text-xs sm:text-[13px] text-slate-300 mt-0.5 leading-snug">
                   <FormattedText text={tpu.sweetSpot} />
                 </p>
               </div>
               <div className="text-right font-mono shrink-0">
-                <div className="text-sm sm:text-base xl:text-lg font-bold text-emerald-300">{tpu.computeHeadline}</div>
-                <div className="text-xs sm:text-sm text-cyan-300 mt-0.5">
+                <div className="text-sm sm:text-[15px] font-bold text-emerald-300">{tpu.computeHeadline}</div>
+                <div className="text-xs text-cyan-300 mt-0.5">
                   <FormattedText text={tpu.scaleHeadline} />
                 </div>
               </div>

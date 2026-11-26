@@ -9,11 +9,11 @@ export const SLIDES_DATA: SlideDefinition[] = [
     title: 'Hands-on with AlphaEvolve & Antigravity',
     subtitle: 'Powering Autonomous Agent Pipelines on Google Cloud TPUs • GDG Australia',
     keyTakeaway:
-      'Humans shaped civilization through Conversation and Tools. Now we build self-evolving autonomous intelligence that converses, wields tools, and rewrites its own algorithms at ExaFLOP scale. Unite Antigravity pipelines, the Gemini Enterprise Agent Platform, and AlphaEvolve on Google Cloud TPUs.',
+      'Humans shaped civilization through Conversation and Tools. Now we build self-evolving autonomous intelligence that converses, wields tools, and rewrites its own algorithms at ExaFLOP scale.',
     bullets: [
-      'What We Will Build: An end-to-end agentic workflow — setting up Antigravity pipelines, defining AlphaEvolve loops, and scaling distributed evaluation on Cloud TPUs.',
+      'What We Will Build: An end-to-end agentic workflow: setting up Antigravity pipelines, defining AlphaEvolve loops, and scaling distributed evaluation on Cloud TPUs.',
       'Three-Pillar Stack: Antigravity (App · CLI · IDE · SDK)\nAlphaEvolve on Gemini Enterprise\nGoogle Cloud TPUs (v6e · Ironwood · 8i)',
-      'Zero-to-Hero Codelab: Start from [`Google-Cloud-AI/alphaevolve-on-googlecloud`](https://github.com/Google-Cloud-AI/alphaevolve-on-googlecloud) & its 6 official [`ae` skills](https://github.com/Google-Cloud-AI/alphaevolve-on-googlecloud/tree/main/skills).',
+      'Zero-to-Hero Codelab: Start from [`Google-Cloud-AI/alphaevolve-on-googlecloud`](https://codelabs.developers.google.com/alphaevolve-on-google-cloud-1#0) & its 6 official [`ae` skills](https://github.com/Google-Cloud-AI/alphaevolve-on-googlecloud/tree/main/skills).',
     ],
     metrics: [
       { label: 'Codelab n=26 Packing', value: '+171.2% Radii', accent: 'cyan' },
@@ -37,7 +37,7 @@ export const SLIDES_DATA: SlideDefinition[] = [
     subtitle: 'From Flint & Printing Presses to Autonomous Software & Self-Evolving Algorithms',
     layout: 'visual-panorama',
     keyTakeaway:
-      'Every scientific revolution arrived when humanity upgraded its tools — today, for the first time, our tools can write, test, and evolve better versions of themselves.',
+      'Every scientific revolution arrived when humanity upgraded its tools. Today, for the first time, our tools can write, test, and evolve better versions of themselves.',
     bullets: [
       'Physical Leverage: Stone tools, levers, and steam engines amplified human muscle.',
       'Computational Leverage: Microprocessors and Cloud TPUs amplified mathematical speed by 10¹²×.',
@@ -90,7 +90,7 @@ export const SLIDES_DATA: SlideDefinition[] = [
     subtitle: 'From Oral Tradition & Scientific Papers to Multi-Agent Dialogue & Tool-Grounded Reasoning',
     layout: 'visual-panorama',
     keyTakeaway:
-      'Science is a conversation across centuries. Today, language itself has become an executable interface — uniting human curiosity, Antigravity agents, and deterministic verifiers.',
+      'Science is a conversation across centuries. Today, language itself has become an executable interface — uniting human curiosity, AI agents, and deterministic verifiers.',
     bullets: [
       'Shared Memory: Writing and the printing press turned private insight into cumulative science.',
       'Global Networks: The Internet and open-source repos connected every researcher in real time.',

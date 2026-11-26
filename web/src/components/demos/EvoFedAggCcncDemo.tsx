@@ -61,10 +61,10 @@ export const EvoFedAggCcncDemo: React.FC<{ staticPrint?: boolean }> = ({ staticP
   };
 
   return (
-    <div className="flex flex-col h-full justify-between rounded-2xl bg-slate-900/85 border border-emerald-500/35 p-4 xl:p-5 shadow-xl gap-3">
+    <div className="flex flex-col h-full min-h-0 justify-between rounded-2xl bg-slate-900/85 border border-emerald-500/35 p-3.5 xl:p-4 shadow-xl gap-2.5 overflow-hidden">
       <div className="flex-1 flex flex-col min-h-0">
         {/* Top Control Strip */}
-        <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-800 shrink-0">
+        <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-800 shrink-0">
           <div className="flex items-center gap-1.5 flex-wrap">
             {TRAJECTORY.map((item, idx) => {
               const isChamp = item.status === 'champion';
@@ -128,11 +128,11 @@ export const EvoFedAggCcncDemo: React.FC<{ staticPrint?: boolean }> = ({ staticP
         {activeView === 'evolution' ? (
           <>
             {/* Metrics Strip (Exact IEEE CCNC 2027 Table I & III) */}
-            <div className="grid grid-cols-4 gap-2.5 my-2.5 shrink-0">
-              <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2">
-                <div className="text-xs sm:text-[13px] font-mono text-slate-300">Fitness S (Eq. 1)</div>
+            <div className="grid grid-cols-4 gap-2 my-2 shrink-0">
+              <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-2.5 py-1.5">
+                <div className="text-[11px] xl:text-xs font-mono text-slate-300">Fitness S (Eq. 1)</div>
                 <div
-                  className={`text-base sm:text-lg xl:text-2xl font-extrabold font-mono mt-0.5 ${
+                  className={`text-base xl:text-xl font-extrabold font-mono mt-0.5 ${
                     current.status === 'champion'
                       ? 'text-emerald-300'
                       : current.status === 'rejected'
@@ -143,21 +143,21 @@ export const EvoFedAggCcncDemo: React.FC<{ staticPrint?: boolean }> = ({ staticP
                   {current.fitnessScore.toFixed(2)}
                 </div>
               </div>
-              <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2">
-                <div className="text-xs sm:text-[13px] font-mono text-slate-300">Entropy Blocked</div>
-                <div className="text-base sm:text-lg xl:text-2xl font-extrabold font-mono text-emerald-300 mt-0.5">
+              <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-2.5 py-1.5">
+                <div className="text-[11px] xl:text-xs font-mono text-slate-300">Entropy Blocked</div>
+                <div className="text-base xl:text-xl font-extrabold font-mono text-emerald-300 mt-0.5">
                   {current.mitigationPct.toFixed(2)}%
                 </div>
               </div>
-              <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2">
-                <div className="text-xs sm:text-[13px] font-mono text-slate-300">Gauss MNIST Acc</div>
-                <div className="text-base sm:text-lg xl:text-2xl font-extrabold font-mono text-cyan-300 mt-0.5">
+              <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-2.5 py-1.5">
+                <div className="text-[11px] xl:text-xs font-mono text-slate-300">Gauss MNIST Acc</div>
+                <div className="text-base xl:text-xl font-extrabold font-mono text-cyan-300 mt-0.5">
                   {current.mnistGaussAccPct.toFixed(1)}%
                 </div>
               </div>
-              <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-3 py-2">
-                <div className="text-xs sm:text-[13px] font-mono text-slate-300">Snapshot Latency</div>
-                <div className="text-base sm:text-lg xl:text-2xl font-extrabold font-mono text-purple-300 mt-0.5">
+              <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-2.5 py-1.5">
+                <div className="text-[11px] xl:text-xs font-mono text-slate-300">Snapshot Latency</div>
+                <div className="text-base xl:text-xl font-extrabold font-mono text-purple-300 mt-0.5">
                   {current.latencyMs.toFixed(2)} ms
                 </div>
               </div>
@@ -260,27 +260,27 @@ export const EvoFedAggCcncDemo: React.FC<{ staticPrint?: boolean }> = ({ staticP
                 </div>
               </div>
 
-              <div className="lg:col-span-7 xl:col-span-8 rounded-xl bg-slate-950 border border-slate-800 p-3.5 flex flex-col justify-between min-w-0">
-                <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-mono mb-2">
+              <div className="lg:col-span-7 xl:col-span-8 rounded-xl bg-slate-950 border border-slate-800 p-3 flex flex-col justify-between min-w-0 min-h-0">
+                <div className="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-mono mb-1.5 shrink-0">
                   <span className="text-emerald-300 flex items-center gap-1.5 font-bold truncate">
                     <GitBranch className="w-4 h-4 shrink-0" /> {current.name}
                   </span>
                   <div className="flex items-center gap-1.5 shrink-0">
-                    <span className={`px-2 py-0.5 rounded-md border text-[11px] sm:text-xs font-bold ${persona.style}`}>
+                    <span className={`px-2 py-0.5 rounded-md border text-[11px] font-bold ${persona.style}`}>
                       {persona.label}
                     </span>
                     {current.status === 'champion' ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[11px] sm:text-xs">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[11px]">
                         <Award className="w-3.5 h-3.5" /> Champion
                       </span>
                     ) : current.status === 'rejected' ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 border border-rose-400/40 text-[11px] sm:text-xs">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 border border-rose-400/40 text-[11px]">
                         <XCircle className="w-3.5 h-3.5" /> Rejected
                       </span>
                     ) : null}
                   </div>
                 </div>
-                <pre className="flex-1 text-xs sm:text-[13px] xl:text-[13.5px] leading-relaxed font-mono text-slate-100 whitespace-pre-wrap break-words">
+                <pre className="flex-1 min-h-0 overflow-y-auto text-[11.5px] sm:text-xs xl:text-[13px] leading-snug font-mono text-slate-100 whitespace-pre-wrap break-words">
                   {current.code}
                 </pre>
               </div>
@@ -352,20 +352,20 @@ export const EvoFedAggCcncDemo: React.FC<{ staticPrint?: boolean }> = ({ staticP
       </div>
 
       <div
-        className={`rounded-xl border px-4 py-2.5 text-sm sm:text-[15px] text-slate-100 flex items-start gap-2.5 leading-snug shrink-0 ${
+        className={`rounded-xl border px-3.5 py-2 text-xs sm:text-[13px] xl:text-sm text-slate-100 flex items-start gap-2 leading-snug shrink-0 ${
           current.status === 'rejected'
             ? 'bg-rose-950/35 border-rose-500/35'
             : 'bg-emerald-950/35 border-emerald-500/30'
         }`}
       >
         <ShieldCheck
-          className={`w-5 h-5 shrink-0 mt-0.5 ${
+          className={`w-4 h-4 shrink-0 mt-0.5 ${
             current.status === 'rejected' ? 'text-rose-400' : 'text-emerald-400'
           }`}
         />
         <div className="flex-1 min-w-0">
           <FormattedText text={current.summary} />
-          <div className="mt-1 text-xs font-mono text-slate-300 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+          <div className="mt-0.5 text-[11px] font-mono text-slate-300 flex flex-wrap items-center gap-x-2 gap-y-0.5">
             <a
               href="https://ccnc2027.ieee-ccnc.org/"
               target="_blank"

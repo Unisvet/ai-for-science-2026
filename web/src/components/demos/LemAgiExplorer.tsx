@@ -7,17 +7,17 @@ export const LemArchetypeExplorer: React.FC = () => {
   const [selected, setSelected] = useState<'golem' | 'solaris'>('golem');
 
   return (
-    <div className="flex flex-col h-full justify-between rounded-2xl bg-slate-900/75 border border-cyan-500/30 p-5 xl:p-6 gap-4">
-      <div className="flex-1 flex flex-col justify-between gap-4">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="text-sm xl:text-base font-mono font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-2">
-            <BookOpen className="w-5 h-5" /> Stanisław Lem’s Two AGI Horizons
+    <div className="flex flex-col h-full min-h-0 justify-between rounded-2xl bg-slate-900/75 border border-cyan-500/30 p-4 xl:p-5 gap-3 overflow-hidden">
+      <div className="flex-1 flex flex-col justify-between gap-3 min-h-0">
+        <div className="flex flex-wrap items-center justify-between gap-2 shrink-0">
+          <span className="text-xs sm:text-sm font-mono font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-2">
+            <BookOpen className="w-4 h-4" /> Stanisław Lem’s Two AGI Horizons
           </span>
           <div className="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800">
             <button
               type="button"
               onClick={() => setSelected('golem')}
-              className={`px-3.5 py-1.5 rounded-lg text-sm xl:text-base font-semibold transition ${
+              className={`px-3 py-1 rounded-lg text-xs sm:text-sm font-semibold transition ${
                 selected === 'golem'
                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/40'
                   : 'text-slate-300 hover:text-white'
@@ -28,7 +28,7 @@ export const LemArchetypeExplorer: React.FC = () => {
             <button
               type="button"
               onClick={() => setSelected('solaris')}
-              className={`px-3.5 py-1.5 rounded-lg text-sm xl:text-base font-semibold transition ${
+              className={`px-3 py-1 rounded-lg text-xs sm:text-sm font-semibold transition ${
                 selected === 'solaris'
                   ? 'bg-rose-500/20 text-rose-300 border border-rose-400/40'
                   : 'text-slate-300 hover:text-white'
@@ -40,75 +40,75 @@ export const LemArchetypeExplorer: React.FC = () => {
         </div>
 
         {selected === 'golem' ? (
-          <div className="flex-1 flex flex-col justify-between rounded-xl bg-emerald-950/25 border border-emerald-500/35 p-5 space-y-4">
+          <div className="flex-1 flex flex-col justify-between rounded-xl bg-emerald-950/25 border border-emerald-500/35 p-4 space-y-3 min-h-0">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h4 className="text-lg sm:text-xl xl:text-2xl font-bold text-emerald-300 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 shrink-0" /> Possibility A: Golem XIV — Dialogic Autoevolution
+              <h4 className="text-base sm:text-lg xl:text-xl font-bold text-emerald-300 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 shrink-0" /> Possibility A: Golem XIV — Dialogic Autoevolution
               </h4>
-              <span className="text-xs sm:text-sm font-mono font-semibold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/35">
+              <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/35">
                 Foreword Dated: 2027
               </span>
             </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-3.5">
               <img
                 src="media/books/GolemXIV.jpg"
                 alt="Book cover of Stanisław Lem’s Golem XIV"
-                className="h-36 sm:h-44 w-auto rounded-lg border border-emerald-400/40 bg-slate-950/70 shadow-xl shadow-black/60 object-contain shrink-0"
+                className="h-28 sm:h-32 xl:h-36 w-auto rounded-lg border border-emerald-400/40 bg-slate-950/70 shadow-xl shadow-black/60 object-contain shrink-0"
               />
-              <p className="text-base sm:text-[1.06rem] xl:text-[1.18rem] text-slate-100 leading-relaxed">
+              <p className="text-sm sm:text-[0.95rem] xl:text-base text-slate-100 leading-relaxed">
                 In Lem’s <em>Golem XIV</em>, Irving T. Creve’s foreword is dated <strong>2027</strong> — next year! Built as an optimization engine, Golem enters{' '}
                 <strong>autoevolution</strong>, rewriting its own logic while pausing to converse with humanity in crystal-clear symbolic lectures (<em>"On Man Threefold"</em>) before growing silent.
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-3 pt-1">
-              <div className="rounded-xl bg-slate-950/80 p-3.5 border border-slate-800">
-                <div className="text-sm sm:text-base xl:text-lg text-emerald-300 font-bold">Shared Protocol Window</div>
-                <div className="text-sm xl:text-[15.5px] text-slate-200 mt-1 leading-snug">Outputs human-readable code diffs, proofs, and MCP/A2A messages.</div>
+            <div className="grid grid-cols-2 gap-2.5 pt-0.5">
+              <div className="rounded-xl bg-slate-950/80 p-3 border border-slate-800">
+                <div className="text-sm xl:text-[15px] text-emerald-300 font-bold">Shared Protocol Window</div>
+                <div className="text-xs xl:text-sm text-slate-200 mt-1 leading-snug">Outputs human-readable code diffs, proofs, and MCP/A2A messages.</div>
               </div>
-              <div className="rounded-xl bg-slate-950/80 p-3.5 border border-slate-800">
-                <div className="text-sm sm:text-base xl:text-lg text-cyan-300 font-bold">2026–2027 Realization</div>
-                <div className="text-sm xl:text-[15.5px] text-slate-200 mt-1 leading-snug">
+              <div className="rounded-xl bg-slate-950/80 p-3 border border-slate-800">
+                <div className="text-sm xl:text-[15px] text-cyan-300 font-bold">2026–2027 Realization</div>
+                <div className="text-xs xl:text-sm text-slate-200 mt-1 leading-snug">
                   <FormattedText text="Antigravity + AlphaEvolve `# EVOLVE-BLOCK`." />
                 </div>
               </div>
             </div>
           </div>
         ) : (
-          <div className="flex-1 flex flex-col justify-between rounded-xl bg-rose-950/25 border border-rose-500/35 p-5 space-y-4">
+          <div className="flex-1 flex flex-col justify-between rounded-xl bg-rose-950/25 border border-rose-500/35 p-4 space-y-3 min-h-0">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h4 className="text-lg sm:text-xl xl:text-2xl font-bold text-rose-300 flex items-center gap-2">
-                <EyeOff className="w-5 h-5 shrink-0" /> Possibility B: Solaris — The Inscrutable Black Box
+              <h4 className="text-base sm:text-lg xl:text-xl font-bold text-rose-300 flex items-center gap-2">
+                <EyeOff className="w-4 h-4 shrink-0" /> Possibility B: Solaris — The Inscrutable Black Box
               </h4>
-              <span className="text-xs sm:text-sm font-mono font-semibold px-3 py-1 rounded-full bg-rose-500/20 text-rose-200 border border-rose-400/35">
+              <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-200 border border-rose-400/35">
                 Zero Shared Logos
               </span>
             </div>
-            <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-3.5">
               <img
                 src="media/books/SolarisNovel.jpg"
                 alt="Book cover of Stanisław Lem’s Solaris"
-                className="h-36 sm:h-44 w-auto rounded-lg border border-rose-400/40 bg-slate-950/70 shadow-xl shadow-black/60 object-contain shrink-0"
+                className="h-28 sm:h-32 xl:h-36 w-auto rounded-lg border border-rose-400/40 bg-slate-950/70 shadow-xl shadow-black/60 object-contain shrink-0"
               />
-              <p className="text-base sm:text-[1.06rem] xl:text-[1.18rem] text-slate-100 leading-relaxed">
+              <p className="text-sm sm:text-[0.95rem] xl:text-base text-slate-100 leading-relaxed">
                 Lem’s sentient planetary ocean stabilizes binary star orbits (superhuman physics mastery!), yet shares{' '}
                 <strong>no language, no modular tool boundary, and no inspectable equations</strong>. Decades of human science fail to verify its intent.
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-3 pt-1">
-              <div className="rounded-xl bg-slate-950/80 p-3.5 border border-slate-800">
-                <div className="text-sm sm:text-base xl:text-lg text-rose-300 font-bold">Architectural Failure Mode</div>
-                <div className="text-sm xl:text-[15.5px] text-slate-200 mt-1 leading-snug">Unverified black-box neural weights mutating without interpretable invariants.</div>
+            <div className="grid grid-cols-2 gap-2.5 pt-0.5">
+              <div className="rounded-xl bg-slate-950/80 p-3 border border-slate-800">
+                <div className="text-sm xl:text-[15px] text-rose-300 font-bold">Architectural Failure Mode</div>
+                <div className="text-xs xl:text-sm text-slate-200 mt-1 leading-snug">Unverified black-box neural weights mutating without interpretable invariants.</div>
               </div>
-              <div className="rounded-xl bg-slate-950/80 p-3.5 border border-slate-800">
-                <div className="text-sm sm:text-base xl:text-lg text-amber-300 font-bold">How We Prevent It</div>
-                <div className="text-sm xl:text-[15.5px] text-slate-200 mt-1 leading-snug">Deterministic verifiers, readable Pallas/Python code &amp; Model Armor gates.</div>
+              <div className="rounded-xl bg-slate-950/80 p-3 border border-slate-800">
+                <div className="text-sm xl:text-[15px] text-amber-300 font-bold">How We Prevent It</div>
+                <div className="text-xs xl:text-sm text-slate-200 mt-1 leading-snug">Deterministic verifiers, readable Pallas/Python code &amp; Model Armor gates.</div>
               </div>
             </div>
           </div>
         )}
       </div>
 
-      <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-4 py-3 flex items-center justify-between text-sm sm:text-base xl:text-[1.06rem]">
+      <div className="rounded-xl bg-slate-950/90 border border-slate-800 px-3.5 py-2.5 flex items-center justify-between text-xs sm:text-sm shrink-0">
         <span className="text-slate-200 font-mono leading-snug">
           "Intelligence was biology’s emergency patch; <strong className="text-cyan-300">autoevolution</strong> is engineering’s deliberate horizon."
         </span>

@@ -61,9 +61,14 @@ export const App: React.FC = () => {
   }, []);
 
   const hideTopNav = activeView === 'deck' && (cinemaMode || isFullscreen);
+  const lockViewport = activeView === 'deck';
 
   return (
-    <div className="min-h-screen w-full flex flex-col">
+    <div
+      className={`w-full flex flex-col ${
+        lockViewport ? 'min-h-screen lg:h-screen lg:overflow-hidden' : 'min-h-screen'
+      }`}
+    >
       {!hideTopNav && (
         <Navbar
           activeView={activeView}
@@ -77,7 +82,11 @@ export const App: React.FC = () => {
         />
       )}
 
-      <main className="flex-1 w-full flex flex-col">
+      <main
+        className={`flex-1 w-full flex flex-col ${
+          lockViewport ? 'lg:min-h-0 lg:overflow-hidden' : ''
+        }`}
+      >
         {activeView === 'deck' && (
           <SlideDeckView
             demoMode={demoMode}

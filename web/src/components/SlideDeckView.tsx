@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   BookOpen,
   ChevronLeft,
@@ -89,10 +89,53 @@ export const SlideDeckView: React.FC<{
   const [activeEpochIdx, setActiveEpochIdx] = useState<number | null>(null);
   const [oscIdle, setOscIdle] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [stageScale, setStageScale] = useState<number>(1);
   const idleTimerRef = useRef<number | null>(null);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLElement | null>(null);
 
   const slide = SLIDES_DATA[slideIdx];
   const progressPct = ((slideIdx + 1) / total) * 100;
+
+  // Responsive desktop viewport auto-fit: keeps 100% native scale when content
+  // fits, and smoothly scales down only if a short screen or dense widget would
+  // otherwise overflow — guaranteeing zero vertical scrolling in Cinema Stage Mode.
+  useLayoutEffect(() => {
+    const computeFit = () => {
+      if (typeof window === 'undefined' || window.innerWidth < 1024) {
+        setStageScale(1);
+        return;
+      }
+      const vp = viewportRef.current;
+      const content = contentRef.current;
+      if (!vp || !content) return;
+
+      const availableH = vp.clientHeight;
+      const naturalH = content.scrollHeight;
+      if (availableH > 0 && naturalH > availableH + 2) {
+        const nextScale = Math.max(0.68, Math.min(1, availableH / naturalH));
+        setStageScale((prev) => (Math.abs(prev - nextScale) > 0.004 ? nextScale : prev));
+      } else {
+        setStageScale(1);
+      }
+    };
+
+    computeFit();
+    const rafId = window.requestAnimationFrame(computeFit);
+
+    const observer = new ResizeObserver(() => {
+      computeFit();
+    });
+    if (viewportRef.current) observer.observe(viewportRef.current);
+    if (contentRef.current) observer.observe(contentRef.current);
+    window.addEventListener('resize', computeFit);
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      observer.disconnect();
+      window.removeEventListener('resize', computeFit);
+    };
+  }, [slideIdx, mediaTab, cinemaMode, isFullscreen, activeEpochIdx]);
 
   // Sync URL #1 .. #N hash like Marp / Bespoke decks
   useEffect(() => {
@@ -273,369 +316,375 @@ export const SlideDeckView: React.FC<{
 
   return (
     <div
-      className={`relative w-full flex-1 flex flex-col justify-between overflow-x-hidden ${
+      className={`relative w-full flex-1 flex flex-col justify-between overflow-x-hidden lg:h-full lg:min-h-0 lg:overflow-hidden ${
         cinemaMode ? 'min-h-screen' : 'min-h-[calc(100vh-3.25rem)]'
       }`}
     >
-      {/* Top 4px Full-Screen-Width Progress Bar */}
-      <div className="h-[4px] w-full bg-slate-900/90 shrink-0">
+      {/* Top 3px Full-Screen-Width Progress Bar */}
+      <div className="h-[3px] w-full bg-slate-900/90 shrink-0">
         <div
           className="h-full bg-gradient-to-r from-cyan-400 via-purple-400 to-emerald-400 transition-all duration-300 shadow-[0_0_12px_rgba(34,211,238,0.65)]"
           style={{ width: `${progressPct}%` }}
         />
       </div>
 
-      {/* Full-Screen-Width 16:9 Stage Section */}
-      <section className="relative w-full flex-1 flex flex-col justify-between px-6 sm:px-8 lg:px-12 xl:px-14 pt-5 lg:pt-6 pb-16 lg:pb-20">
-        {/* Full-Width Slide Header (100% width across both columns) */}
-        <header className="w-full border-b border-slate-700/45 pb-4 mb-4 xl:mb-5">
-          <div className="flex items-center justify-between gap-3 mb-2.5">
-            <div className="flex items-center gap-2.5 min-w-0 flex-1">
-              <span className="shrink-0 px-3.5 py-1 rounded-full text-xs sm:text-sm xl:text-[15px] font-mono font-bold uppercase tracking-wider bg-cyan-500/15 text-cyan-300 border border-cyan-400/35">
-                {slide.act}
-              </span>
-              <span className="text-base sm:text-lg xl:text-xl 2xl:text-[1.28rem] font-semibold text-cyan-200/95 truncate min-w-0">
-                <FormattedText text={slide.subtitle} />
-              </span>
-            </div>
-
-            {/* Floating-style Top-Right Date / Time / Pagination Badges */}
-            <div className="flex items-center gap-2 shrink-0 font-mono">
-              <button
-                type="button"
-                onClick={() => setActiveGlossaryTermId(slide.deepDiveTerms?.[0] ?? GLOSSARY_TERMS[0].id)}
-                title="Open Concept Deep-Dive Glossary (Shortcut: D)"
-                className="no-print inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs sm:text-sm font-bold bg-purple-500/20 text-purple-200 border border-purple-400/50 hover:bg-purple-400 hover:text-slate-950 transition"
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Deep-Dive Terms (D)</span>
-              </button>
-              <a
-                href="https://gdgaiforscience.github.io/devfest-program/#svetlana-meissner"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="GDG Australia Workshop"
-                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs sm:text-sm font-bold bg-slate-900/90 text-slate-100 border border-cyan-400/45 hover:border-cyan-300 hover:bg-cyan-500/20 hover:text-cyan-200 shadow transition"
-              >
-                <span>GDG Australia</span>
-                <ExternalLink className="w-3.5 h-3.5 text-cyan-300" />
-              </a>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold bg-slate-900/85 text-slate-200 border border-slate-700/80">
-                <Clock className="w-3.5 h-3.5 text-purple-400" />
-                {slide.timeRange}
-              </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-sm font-bold bg-slate-950 text-cyan-300 border border-slate-800">
-                {String(slide.number).padStart(2, '0')} / {String(total).padStart(2, '0')}
-              </span>
-            </div>
-          </div>
-
-          <h1 className="w-full text-3xl sm:text-4xl lg:text-[2.6rem] xl:text-[2.95rem] 2xl:text-[3.3rem] font-extrabold tracking-tight text-white leading-[1.1]">
-            {slide.title}
-          </h1>
-        </header>
-
-        {/* Slide Body: Full-Width Panoramic Image Showcase OR Universal 2-Column Split */}
-        {slide.layout === 'visual-panorama' ? (
-          <VisualPanoramaSlideBody
-            slide={slide}
-            activeEpochIdx={activeEpochIdx}
-            onSelectEpoch={setActiveEpochIdx}
-          />
-        ) : (
-        <div className="w-full flex-1 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-5 lg:gap-6 xl:gap-7 items-stretch min-h-0">
-          {/* Left Narrative Column (~33.3% compact width to maximize right 16:9 illustration) */}
-          <div className="flex flex-col justify-between gap-4 xl:gap-5 min-w-0">
-            <div className="flex-1 flex flex-col gap-4 xl:gap-5">
-              {/* Core Architectural Thesis Callout */}
-              <div
-                className={`shrink-0 rounded-2xl bg-gradient-to-br from-slate-900/95 via-slate-950/95 to-cyan-950/25 border border-cyan-500/40 shadow-lg flex flex-col justify-center ${
-                  slide.number === 1
-                    ? 'p-5 xl:p-6'
-                    : 'p-4 sm:p-5 xl:p-5'
-                }`}
-              >
-                <div
-                  className={`text-sm xl:text-[15px] font-mono font-bold uppercase tracking-widest text-emerald-300 flex items-center gap-2 ${
-                    slide.number === 1 ? 'mb-3' : 'mb-2.5'
-                  }`}
-                >
-                  <Sparkles className="w-4 h-4 shrink-0" /> Core Architectural Thesis
-                </div>
-                <p
-                  className={`whitespace-pre-line font-normal tracking-[-0.01em] ${
-                    slide.number === 1
-                      ? 'text-xl sm:text-2xl lg:text-[1.48rem] xl:text-[1.66rem] 2xl:text-[1.82rem] text-white leading-[1.52] xl:leading-[1.58]'
-                      : isDenseSlide
-                        ? 'text-base sm:text-lg lg:text-[1.24rem] xl:text-[1.38rem] 2xl:text-[1.52rem] text-slate-50 leading-[1.48] xl:leading-[1.54]'
-                        : isConciseSlide
-                          ? 'text-lg sm:text-xl lg:text-[1.42rem] xl:text-[1.58rem] 2xl:text-[1.74rem] text-white leading-[1.55] xl:leading-[1.6]'
-                          : 'text-lg sm:text-xl lg:text-[1.32rem] xl:text-[1.48rem] 2xl:text-[1.62rem] text-slate-50 leading-[1.52] xl:leading-[1.58]'
-                  }`}
-                >
-                  <FormattedText text={slide.keyTakeaway} />
-                </p>
+      {/* Viewport-Locked Stage Container (Auto-Fits on Desktop, Scrolls Gracefully on Mobile) */}
+      <div ref={viewportRef} className="relative w-full flex-1 min-h-0 lg:overflow-hidden flex flex-col">
+        {/* Full-Screen-Width 16:9 Stage Section */}
+        <section
+          ref={contentRef}
+          style={
+            stageScale < 0.999
+              ? {
+                  transform: `scale(${stageScale})`,
+                  transformOrigin: 'top center',
+                }
+              : undefined
+          }
+          className="relative w-full shrink-0 min-h-full flex flex-col justify-between px-5 sm:px-7 lg:px-10 xl:px-12 pt-3 lg:pt-3.5 pb-14 lg:pb-14"
+        >
+          {/* Full-Width Slide Header (100% width across both columns) */}
+          <header className="w-full border-b border-slate-700/45 pb-2.5 mb-3 xl:mb-3.5 shrink-0">
+            <div className="flex items-center justify-between gap-3 mb-1.5">
+              <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                <span className="shrink-0 px-3 py-0.5 rounded-full text-[11px] sm:text-xs xl:text-[13px] font-mono font-bold uppercase tracking-wider bg-cyan-500/15 text-cyan-300 border border-cyan-400/35">
+                  {slide.act}
+                </span>
+                <span className="text-sm sm:text-base xl:text-lg 2xl:text-[1.12rem] font-semibold text-cyan-200/95 truncate min-w-0">
+                  <FormattedText text={slide.subtitle} />
+                </span>
               </div>
 
-              {/* Clean Non-Slop Typographic Stack (.points-stack) */}
-              <div className={`flex-1 flex flex-col ${isDenseSlide ? 'gap-3' : 'gap-3.5 xl:gap-4'}`}>
-                {slide.bullets.map((b, i) => {
-                  const { kicker, body } = parseBulletKicker(b);
-                  const bodyLines = body.split('\n').filter(Boolean);
-                  const isMultiLine = bodyLines.length > 1;
-                  const isQuoteHighlight = i === 3;
-                  const bulletImage = slide.bulletImages?.[i];
-                  return (
-                    <div
-                      key={b}
-                      className={`flex-1 flex ${
-                        bulletImage ? 'flex-row items-center gap-3.5 sm:gap-4' : 'flex-col justify-center'
-                      } rounded-xl border transition ${
-                        isDenseSlide || slide.number === 1 ? 'px-4 py-3 sm:px-5 sm:py-3.5' : 'px-4 py-3.5 sm:px-5 sm:py-4'
-                      } ${
-                        isQuoteHighlight
-                          ? 'bg-gradient-to-r from-purple-950/40 via-slate-900/70 to-emerald-950/30 border-purple-400/35 hover:border-purple-300/55'
-                          : 'bg-white/[0.04] hover:bg-white/[0.065] border-white/[0.1]'
-                      }`}
-                    >
-                      <div className={bulletImage ? 'flex-1 min-w-0 flex flex-col justify-center' : 'contents'}>
-                        {kicker ? (
-                          <>
-                            <span
-                              className={`block font-mono font-semibold uppercase tracking-wider mb-1.5 ${
-                                isConciseSlide
-                                  ? 'text-sm xl:text-[15px] 2xl:text-base'
-                                  : 'text-xs sm:text-sm xl:text-[15px] 2xl:text-base'
-                              } ${kickerColorClass(i)}`}
-                            >
-                              {kicker}
-                            </span>
-                            {isMultiLine ? (
-                              <ul className="space-y-2">
-                                {bodyLines.map((line) => (
-                                  <li
-                                    key={line}
-                                    className="flex items-start gap-2.5 text-base sm:text-lg lg:text-[1.16rem] xl:text-[1.26rem] 2xl:text-[1.36rem] font-normal text-slate-100 leading-relaxed"
-                                  >
-                                    <span className={`mt-2.5 w-2 h-2 rounded-full shrink-0 bg-current ${kickerColorClass(i)}`} />
-                                    <span>
-                                      <FormattedText text={line} />
-                                    </span>
-                                  </li>
-                                ))}
-                              </ul>
-                            ) : (
+              {/* Floating-style Top-Right Date / Time / Pagination Badges */}
+              <div className="flex items-center gap-1.5 shrink-0 font-mono">
+                <button
+                  type="button"
+                  onClick={() => setActiveGlossaryTermId(slide.deepDiveTerms?.[0] ?? GLOSSARY_TERMS[0].id)}
+                  title="Open Concept Deep-Dive Glossary (Shortcut: D)"
+                  className="no-print inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold bg-purple-500/20 text-purple-200 border border-purple-400/50 hover:bg-purple-400 hover:text-slate-950 transition"
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Deep-Dive Terms (D)</span>
+                </button>
+                <a
+                  href="https://gdgaiforscience.github.io/devfest-program/#svetlana-meissner"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="GDG Australia Workshop"
+                  className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold bg-slate-900/90 text-slate-100 border border-cyan-400/45 hover:border-cyan-300 hover:bg-cyan-500/20 hover:text-cyan-200 shadow transition"
+                >
+                  <span>GDG Australia</span>
+                  <ExternalLink className="w-3 h-3 text-cyan-300" />
+                </a>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-semibold bg-slate-900/85 text-slate-200 border border-slate-700/80">
+                  <Clock className="w-3 h-3 text-purple-400" />
+                  {slide.timeRange}
+                </span>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] sm:text-xs font-bold bg-slate-950 text-cyan-300 border border-slate-800">
+                  {String(slide.number).padStart(2, '0')} / {String(total).padStart(2, '0')}
+                </span>
+              </div>
+            </div>
+
+            <h1 className="w-full text-2xl sm:text-3xl lg:text-[2.05rem] xl:text-[2.35rem] 2xl:text-[2.65rem] font-extrabold tracking-tight text-white leading-[1.08]">
+              {slide.title}
+            </h1>
+          </header>
+
+          {/* Slide Body: Full-Width Panoramic Image Showcase OR Universal 2-Column Split */}
+          {slide.layout === 'visual-panorama' ? (
+            <VisualPanoramaSlideBody
+              slide={slide}
+              activeEpochIdx={activeEpochIdx}
+              onSelectEpoch={setActiveEpochIdx}
+            />
+          ) : (
+          <div className="w-full flex-1 grid grid-cols-1 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,1.88fr)] gap-4 lg:gap-5 xl:gap-6 items-stretch min-h-0">
+            {/* Left Narrative Column (~37.3% balanced width for compact wrapping & crisp legibility) */}
+            <div className="flex flex-col justify-between gap-2.5 xl:gap-3 min-w-0 min-h-0">
+              <div className="flex-1 flex flex-col gap-2.5 xl:gap-3 min-h-0">
+                {/* Core Architectural Thesis Callout */}
+                <div
+                  className={`shrink-0 rounded-2xl bg-gradient-to-br from-slate-900/95 via-slate-950/95 to-cyan-950/25 border border-cyan-500/40 shadow-lg flex flex-col justify-center ${
+                    slide.number === 1
+                      ? 'px-4 py-3 xl:px-4.5 xl:py-3.5'
+                      : 'px-3.5 py-2.5 sm:px-4 sm:py-3'
+                  }`}
+                >
+                  <div className="text-[11px] sm:text-xs xl:text-[13px] font-mono font-bold uppercase tracking-widest text-emerald-300 flex items-center gap-1.5 mb-1.5">
+                    <Sparkles className="w-3.5 h-3.5 shrink-0" /> Core Architectural Thesis
+                  </div>
+                  <p
+                    className={`whitespace-pre-line font-normal tracking-[-0.01em] ${
+                      slide.number === 1
+                        ? 'text-base sm:text-lg lg:text-[1.12rem] xl:text-[1.24rem] 2xl:text-[1.36rem] text-white leading-[1.38] xl:leading-[1.42]'
+                        : isDenseSlide
+                          ? 'text-sm sm:text-[0.95rem] lg:text-[0.98rem] xl:text-[1.06rem] 2xl:text-[1.14rem] text-slate-50 leading-[1.36] xl:leading-[1.4]'
+                          : isConciseSlide
+                            ? 'text-base sm:text-lg lg:text-[1.1rem] xl:text-[1.22rem] 2xl:text-[1.32rem] text-white leading-[1.4] xl:leading-[1.45]'
+                            : 'text-sm sm:text-base lg:text-[1.04rem] xl:text-[1.14rem] 2xl:text-[1.24rem] text-slate-50 leading-[1.38] xl:leading-[1.42]'
+                    }`}
+                  >
+                    <FormattedText text={slide.keyTakeaway} />
+                  </p>
+                </div>
+
+                {/* Clean Non-Slop Typographic Stack (.points-stack) */}
+                <div className={`flex-1 flex flex-col min-h-0 ${isDenseSlide ? 'gap-2' : 'gap-2.5'}`}>
+                  {slide.bullets.map((b, i) => {
+                    const { kicker, body } = parseBulletKicker(b);
+                    const bodyLines = body.split('\n').filter(Boolean);
+                    const isMultiLine = bodyLines.length > 1;
+                    const isQuoteHighlight = i === 3;
+                    const bulletImage = slide.bulletImages?.[i];
+                    return (
+                      <div
+                        key={b}
+                        className={`flex-1 flex ${
+                          bulletImage ? 'flex-row items-center gap-3' : 'flex-col justify-center'
+                        } rounded-xl border transition ${
+                          isDenseSlide || slide.number === 1 ? 'px-3.5 py-2 xl:px-4 xl:py-2.5' : 'px-3.5 py-2.5 xl:px-4 xl:py-3'
+                        } ${
+                          isQuoteHighlight
+                            ? 'bg-gradient-to-r from-purple-950/40 via-slate-900/70 to-emerald-950/30 border-purple-400/35 hover:border-purple-300/55'
+                            : 'bg-white/[0.04] hover:bg-white/[0.065] border-white/[0.1]'
+                        }`}
+                      >
+                        <div className={bulletImage ? 'flex-1 min-w-0 flex flex-col justify-center' : 'contents'}>
+                          {kicker ? (
+                            <>
+                              <span
+                                className={`block font-mono font-semibold uppercase tracking-wider mb-1 text-[11px] sm:text-xs xl:text-[13px] ${kickerColorClass(i)}`}
+                              >
+                                {kicker}
+                              </span>
+                              {isMultiLine ? (
+                                <ul className="space-y-1">
+                                  {bodyLines.map((line) => (
+                                    <li
+                                      key={line}
+                                      className="flex items-start gap-2 text-sm sm:text-[0.95rem] lg:text-[0.96rem] xl:text-[1.04rem] 2xl:text-[1.12rem] font-normal text-slate-100 leading-snug"
+                                    >
+                                      <span className={`mt-2 w-1.5 h-1.5 rounded-full shrink-0 bg-current ${kickerColorClass(i)}`} />
+                                      <span>
+                                        <FormattedText text={line} />
+                                      </span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              ) : (
+                                <p
+                                  className={`font-normal leading-[1.38] xl:leading-[1.42] ${
+                                    isQuoteHighlight
+                                      ? 'text-sm lg:text-[0.92rem] xl:text-[1.0rem] 2xl:text-[1.08rem] text-purple-50'
+                                      : isDenseSlide
+                                        ? 'text-sm lg:text-[0.92rem] xl:text-[1.0rem] 2xl:text-[1.06rem] text-slate-100'
+                                        : isConciseSlide
+                                          ? 'text-sm sm:text-base lg:text-[1.02rem] xl:text-[1.1rem] 2xl:text-[1.18rem] text-slate-100'
+                                          : 'text-sm sm:text-base lg:text-[0.96rem] xl:text-[1.05rem] 2xl:text-[1.12rem] text-slate-100'
+                                  }`}
+                                >
+                                  <FormattedText text={body} />
+                                </p>
+                              )}
+                            </>
+                          ) : (
+                            <div className="flex items-start gap-2.5">
+                              <span
+                                className={`font-mono text-sm font-semibold mt-0.5 shrink-0 ${kickerColorClass(i)}`}
+                              >
+                                0{i + 1}
+                              </span>
                               <p
-                                className={`font-normal leading-[1.5] xl:leading-[1.55] ${
-                                  isQuoteHighlight
-                                    ? 'text-base lg:text-[1.1rem] xl:text-[1.2rem] 2xl:text-[1.32rem] text-purple-50'
-                                    : isDenseSlide
-                                      ? 'text-base lg:text-[1.1rem] xl:text-[1.22rem] 2xl:text-[1.34rem] text-slate-100'
-                                      : isConciseSlide
-                                        ? 'text-base sm:text-lg lg:text-[1.22rem] xl:text-[1.34rem] 2xl:text-[1.46rem] text-slate-100'
-                                        : 'text-base sm:text-lg lg:text-[1.16rem] xl:text-[1.28rem] 2xl:text-[1.4rem] text-slate-100'
+                                className={`font-normal leading-[1.38] xl:leading-[1.42] ${
+                                  isConciseSlide
+                                    ? 'text-sm sm:text-base lg:text-[1.02rem] xl:text-[1.1rem] 2xl:text-[1.18rem] text-slate-100'
+                                    : 'text-sm sm:text-base lg:text-[0.96rem] xl:text-[1.05rem] 2xl:text-[1.12rem] text-slate-100'
                                 }`}
                               >
                                 <FormattedText text={body} />
                               </p>
-                            )}
-                          </>
-                        ) : (
-                          <div className="flex items-start gap-3">
-                            <span
-                              className={`font-mono text-base font-semibold mt-0.5 shrink-0 ${kickerColorClass(i)}`}
-                            >
-                              0{i + 1}
-                            </span>
-                            <p
-                              className={`font-normal leading-[1.5] xl:leading-[1.55] ${
-                                isConciseSlide
-                                  ? 'text-base sm:text-lg lg:text-[1.22rem] xl:text-[1.34rem] 2xl:text-[1.46rem] text-slate-100'
-                                  : 'text-base sm:text-lg lg:text-[1.16rem] xl:text-[1.28rem] 2xl:text-[1.4rem] text-slate-100'
-                              }`}
-                            >
-                              <FormattedText text={body} />
-                            </p>
-                          </div>
+                            </div>
+                          )}
+                        </div>
+                        {bulletImage && (
+                          <img
+                            src={bulletImage.src}
+                            alt={bulletImage.alt}
+                            className="h-16 sm:h-20 xl:h-24 w-auto max-w-[4.5rem] object-contain rounded-md border border-white/15 bg-slate-950/60 shadow-lg shadow-black/50 shrink-0"
+                          />
                         )}
                       </div>
-                      {bulletImage && (
-                        <img
-                          src={bulletImage.src}
-                          alt={bulletImage.alt}
-                          className="h-24 sm:h-28 xl:h-32 w-auto max-w-[5.75rem] object-contain rounded-md border border-white/15 bg-slate-950/60 shadow-lg shadow-black/50 shrink-0"
-                        />
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Bottom Deep-Dive Term Buttons + Metrics + Optional Slide 1 Speaker Badge */}
-            <div className="space-y-2.5 pt-0.5 shrink-0">
-              {slide.deepDiveTerms && slide.deepDiveTerms.length > 0 && (
-                <div className="no-print flex flex-wrap items-center gap-1.5">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 mr-1">
-                    Explain:
-                  </span>
-                  {slide.deepDiveTerms.map((termId) => {
-                    const term = GLOSSARY_BY_ID[termId];
-                    if (!term) return null;
-                    return (
-                      <button
-                        key={term.id}
-                        type="button"
-                        onClick={() => setActiveGlossaryTermId(term.id)}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono font-semibold bg-slate-900/90 hover:bg-cyan-500/20 text-cyan-200 border border-cyan-500/35 hover:border-cyan-300 transition shadow-sm"
-                      >
-                        <BookOpen className="w-3 h-3 text-cyan-300 shrink-0" />
-                        <span>{term.shortLabel}</span>
-                      </button>
                     );
                   })}
                 </div>
-              )}
-
-              {slide.metrics && (
-                <div className="grid grid-cols-3 gap-2.5">
-                  {slide.metrics.map((m) =>
-                    m.href ? (
-                      <a
-                        key={m.label}
-                        href={m.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        title={`Open ${m.href}`}
-                        className={`block rounded-xl border px-3 py-2.5 transition hover:brightness-125 hover:border-white/40 ${metricBadgeStyle(m.accent)}`}
-                      >
-                        <div className="text-xs sm:text-[13px] xl:text-sm font-mono opacity-95 truncate">
-                          {m.label}
-                        </div>
-                        <div className="text-sm sm:text-[15px] xl:text-base 2xl:text-[1.05rem] font-extrabold font-mono tracking-tight leading-tight mt-0.5 underline decoration-current/45 underline-offset-2">
-                          {m.value}
-                        </div>
-                      </a>
-                    ) : m.glossaryTermId ? (
-                      <button
-                        key={m.label}
-                        type="button"
-                        onClick={() => setActiveGlossaryTermId(m.glossaryTermId!)}
-                        title={`Explain ${m.value}`}
-                        className={`text-left rounded-xl border px-3 py-2.5 transition hover:brightness-125 hover:border-white/40 cursor-pointer ${metricBadgeStyle(m.accent)}`}
-                      >
-                        <div className="text-xs sm:text-[13px] xl:text-sm font-mono opacity-95 truncate flex items-center justify-between gap-1">
-                          <span className="truncate">{m.label}</span>
-                          <BookOpen className="w-3.5 h-3.5 shrink-0 opacity-80" />
-                        </div>
-                        <div className="text-sm sm:text-[15px] xl:text-base 2xl:text-[1.05rem] font-extrabold font-mono tracking-tight leading-tight mt-0.5 underline decoration-current/45 underline-offset-2">
-                          {m.value}
-                        </div>
-                      </button>
-                    ) : (
-                      <div
-                        key={m.label}
-                        className={`rounded-xl border px-3 py-2.5 ${metricBadgeStyle(m.accent)}`}
-                      >
-                        <div className="text-xs sm:text-[13px] xl:text-sm font-mono opacity-95 truncate">
-                          {m.label}
-                        </div>
-                        <div className="text-sm sm:text-[15px] xl:text-base 2xl:text-[1.05rem] font-extrabold font-mono tracking-tight leading-tight mt-0.5">
-                          {m.value}
-                        </div>
-                      </div>
-                    ),
-                  )}
-                </div>
-              )}
-
-              {slide.number === 1 && (
-                <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-slate-900/90 border border-cyan-400/35 px-4 py-3 shadow-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-emerald-400 text-slate-950 font-extrabold text-base flex items-center justify-center shrink-0">
-                      SM
-                    </div>
-                    <div>
-                      <div className="text-base xl:text-lg font-extrabold text-white leading-tight">
-                        Svetlana Meissner
-                      </div>
-                      <div className="text-xs sm:text-sm xl:text-[14.5px] font-mono text-cyan-300">
-                        AI Researcher &amp; Architect • Wireless Systems, Brandenburg University of Technology BTU
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-xs sm:text-sm xl:text-[14.5px] font-mono font-semibold text-emerald-300">
-                    50-Min Hands-On Workshop • GDG Australia
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Right Media / Interactive Demo / Illustration Column (~61.8% Golden Ratio) */}
-          <div className="flex flex-col min-h-[360px] lg:min-h-0 min-w-0">
-            {slide.illustration && (
-              <div className="flex items-center justify-end gap-2 mb-2">
-                <button
-                  type="button"
-                  onClick={() => setMediaTab('illustration')}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs sm:text-sm font-mono font-semibold border transition ${
-                    mediaTab === 'illustration'
-                      ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400/50'
-                      : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:text-white'
-                  }`}
-                >
-                  <ImageIcon className="w-4 h-4" /> Illustration (I)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMediaTab('widget')}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs sm:text-sm font-mono font-semibold border transition ${
-                    mediaTab === 'widget'
-                      ? 'bg-emerald-500/20 text-emerald-200 border-emerald-400/50'
-                      : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:text-white'
-                  }`}
-                >
-                  <Sparkles className="w-4 h-4" /> Interactive View (I)
-                </button>
               </div>
-            )}
 
-            <div className="flex-1 flex flex-col justify-center min-h-0 w-full">
-              {slide.illustration && mediaTab === 'illustration' ? (
-                <figure className="relative w-full aspect-video max-h-full my-auto flex items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-[#060911] shadow-[0_18px_42px_rgba(0,0,0,0.55)]">
-                  <img
-                    src={slide.illustration.src}
-                    alt={slide.illustration.alt}
-                    className={`w-full h-full ${
-                      slide.illustration.fit === 'contain' ? 'object-contain p-4' : 'object-cover'
+              {/* Bottom Deep-Dive Term Buttons + Metrics + Optional Slide 1 Speaker Badge */}
+              <div className="space-y-2 shrink-0">
+                {slide.deepDiveTerms && slide.deepDiveTerms.length > 0 && (
+                  <div className="no-print flex flex-wrap items-center gap-1.5">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 mr-0.5">
+                      Explain:
+                    </span>
+                    {slide.deepDiveTerms.map((termId) => {
+                      const term = GLOSSARY_BY_ID[termId];
+                      if (!term) return null;
+                      return (
+                        <button
+                          key={term.id}
+                          type="button"
+                          onClick={() => setActiveGlossaryTermId(term.id)}
+                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold bg-slate-900/90 hover:bg-cyan-500/20 text-cyan-200 border border-cyan-500/35 hover:border-cyan-300 transition shadow-sm"
+                        >
+                          <BookOpen className="w-3 h-3 text-cyan-300 shrink-0" />
+                          <span>{term.shortLabel}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {slide.metrics && (
+                  <div className="grid grid-cols-3 gap-2">
+                    {slide.metrics.map((m) =>
+                      m.href ? (
+                        <a
+                          key={m.label}
+                          href={m.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={`Open ${m.href}`}
+                          className={`block rounded-xl border px-2.5 py-1.5 xl:px-3 xl:py-2 transition hover:brightness-125 hover:border-white/40 ${metricBadgeStyle(m.accent)}`}
+                        >
+                          <div className="text-[11px] xl:text-xs font-mono opacity-95 truncate">
+                            {m.label}
+                          </div>
+                          <div className="text-xs sm:text-[13px] xl:text-sm 2xl:text-[15px] font-extrabold font-mono tracking-tight leading-tight mt-0.5 underline decoration-current/45 underline-offset-2 truncate">
+                            {m.value}
+                          </div>
+                        </a>
+                      ) : m.glossaryTermId ? (
+                        <button
+                          key={m.label}
+                          type="button"
+                          onClick={() => setActiveGlossaryTermId(m.glossaryTermId!)}
+                          title={`Explain ${m.value}`}
+                          className={`text-left rounded-xl border px-2.5 py-1.5 xl:px-3 xl:py-2 transition hover:brightness-125 hover:border-white/40 cursor-pointer ${metricBadgeStyle(m.accent)}`}
+                        >
+                          <div className="text-[11px] xl:text-xs font-mono opacity-95 truncate flex items-center justify-between gap-1">
+                            <span className="truncate">{m.label}</span>
+                            <BookOpen className="w-3 h-3 shrink-0 opacity-80" />
+                          </div>
+                          <div className="text-xs sm:text-[13px] xl:text-sm 2xl:text-[15px] font-extrabold font-mono tracking-tight leading-tight mt-0.5 underline decoration-current/45 underline-offset-2 truncate">
+                            {m.value}
+                          </div>
+                        </button>
+                      ) : (
+                        <div
+                          key={m.label}
+                          className={`rounded-xl border px-2.5 py-1.5 xl:px-3 xl:py-2 ${metricBadgeStyle(m.accent)}`}
+                        >
+                          <div className="text-[11px] xl:text-xs font-mono opacity-95 truncate">
+                            {m.label}
+                          </div>
+                          <div className="text-xs sm:text-[13px] xl:text-sm 2xl:text-[15px] font-extrabold font-mono tracking-tight leading-tight mt-0.5 truncate">
+                            {m.value}
+                          </div>
+                        </div>
+                      ),
+                    )}
+                  </div>
+                )}
+
+                {slide.number === 1 && (
+                  <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-slate-900/90 border border-cyan-400/35 px-3.5 py-2 shadow-lg">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-emerald-400 text-slate-950 font-extrabold text-sm flex items-center justify-center shrink-0">
+                        SM
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-sm xl:text-[15px] font-extrabold text-white leading-tight truncate">
+                          Svetlana Meissner
+                        </div>
+                        <div className="text-[11px] xl:text-xs font-mono text-cyan-300 truncate">
+                          AI Researcher &amp; Architect • Wireless Systems, BTU Cottbus
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-[11px] xl:text-xs font-mono font-semibold text-emerald-300 shrink-0">
+                      50-Min Workshop • GDG Australia
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Right Media / Interactive Demo / Illustration Column (~62.7% Golden Ratio) */}
+            <div className="flex flex-col min-h-[340px] lg:min-h-0 min-w-0">
+              {slide.illustration && (
+                <div className="flex items-center justify-end gap-1.5 mb-1.5 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setMediaTab('illustration')}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-mono font-semibold border transition ${
+                      mediaTab === 'illustration'
+                        ? 'bg-cyan-500/20 text-cyan-200 border-cyan-400/50'
+                        : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:text-white'
                     }`}
-                  />
-                  {slide.illustration.caption && (
-                    <figcaption className="absolute bottom-3 left-3 right-3 rounded-xl bg-slate-950/90 backdrop-blur-md border border-slate-700/80 px-4 py-2.5 text-sm xl:text-base font-mono text-slate-100">
-                      {slide.illustration.caption}
-                    </figcaption>
-                  )}
-                </figure>
-              ) : (
-                <SlideWidgetRenderer
-                  widget={slide.widget}
-                  mode={demoMode}
-                  onToggleMode={onToggleDemoMode}
-                />
+                  >
+                    <ImageIcon className="w-3.5 h-3.5" /> Illustration (I)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMediaTab('widget')}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-mono font-semibold border transition ${
+                      mediaTab === 'widget'
+                        ? 'bg-emerald-500/20 text-emerald-200 border-emerald-400/50'
+                        : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:text-white'
+                    }`}
+                  >
+                    <Sparkles className="w-3.5 h-3.5" /> Interactive View (I)
+                  </button>
+                </div>
               )}
+
+              <div className="flex-1 flex flex-col justify-center min-h-0 w-full">
+                {slide.illustration && mediaTab === 'illustration' ? (
+                  <figure className="relative w-full h-full max-h-full my-auto flex items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-[#060911] shadow-[0_18px_42px_rgba(0,0,0,0.55)]">
+                    <img
+                      src={slide.illustration.src}
+                      alt={slide.illustration.alt}
+                      className={`w-full h-full ${
+                        slide.illustration.fit === 'contain' ? 'object-contain p-3' : 'object-cover'
+                      }`}
+                    />
+                    {slide.illustration.caption && (
+                      <figcaption className="absolute bottom-2.5 left-2.5 right-2.5 rounded-xl bg-slate-950/90 backdrop-blur-md border border-slate-700/80 px-3.5 py-2 text-xs xl:text-sm font-mono text-slate-100">
+                        {slide.illustration.caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                ) : (
+                  <SlideWidgetRenderer
+                    widget={slide.widget}
+                    mode={demoMode}
+                    onToggleMode={onToggleDemoMode}
+                  />
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        )}
+          )}
 
-        {/* Subtle "...made with Antigravity" Bottom-Right Signature */}
-        <div className="pointer-events-none hidden md:inline-flex items-center gap-1.5 absolute bottom-5 right-8 lg:right-14 font-mono text-xs text-slate-400">
-          <span>...made with</span>
-          <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-          <strong className="text-cyan-400 font-bold">Antigravity</strong>
-        </div>
-      </section>
+          {/* Subtle "...made with Antigravity" Bottom-Right Signature */}
+          <div className="pointer-events-none hidden md:inline-flex items-center gap-1.5 absolute bottom-3.5 right-7 lg:right-12 font-mono text-[11px] text-slate-400">
+            <span>...made with</span>
+            <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+            <strong className="text-cyan-400 font-bold">Antigravity</strong>
+          </div>
+        </section>
+      </div>
 
       {/* Local-Only Floating Speaker Notes Drawer (rendered only when local notes file exists) */}
       {HAS_LOCAL_NOTES && showNotes && LOCAL_NOTES[slide.id] && (
@@ -660,7 +709,7 @@ export const SlideDeckView: React.FC<{
       {/* Bespoke/Marp-Inspired Floating On-Screen Controls (OSC) at Bottom-Center */}
       <div
         onMouseEnter={() => setOscIdle(false)}
-        className={`no-print fixed bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-4 py-2 rounded-full bg-slate-950/85 backdrop-blur-md border border-slate-700/80 shadow-[0_10px_30px_rgba(0,0,0,0.65)] transition-opacity duration-300 ${
+        className={`no-print fixed bottom-2.5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-950/85 backdrop-blur-md border border-slate-700/80 shadow-[0_10px_30px_rgba(0,0,0,0.65)] transition-opacity duration-300 ${
           oscIdle && cinemaMode ? 'opacity-15 hover:opacity-100' : 'opacity-95 hover:opacity-100'
         }`}
       >

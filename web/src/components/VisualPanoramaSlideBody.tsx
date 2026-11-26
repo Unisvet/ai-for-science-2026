@@ -56,13 +56,13 @@ export const VisualPanoramaSlideBody: React.FC<{
   const hasSpotlight = !staticPrint && activeEpochIdx !== null && activeEpochIdx >= 0 && activeEpochIdx < epochs.length;
 
   return (
-    <div className={`w-full flex-1 flex flex-col min-h-0 ${staticPrint ? 'gap-3 py-2' : 'gap-3.5 xl:gap-4'}`}>
+    <div className={`w-full flex-1 flex flex-col min-h-0 ${staticPrint ? 'gap-3 py-2' : 'gap-2.5 xl:gap-3'}`}>
       {/* Full-Width Panoramic Artwork Stage */}
       <div
-        className={`relative w-full flex-1 rounded-2xl overflow-hidden border border-white/15 bg-[#050814] shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex flex-col justify-end ${
+        className={`relative w-full flex-1 min-h-0 rounded-2xl overflow-hidden border border-white/15 bg-[#050814] shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex flex-col justify-end ${
           staticPrint
             ? 'aspect-[16/8.2] min-h-[420px] lg:min-h-[500px] print:aspect-auto print:min-h-0'
-            : 'min-h-[360px] lg:min-h-[400px]'
+            : 'min-h-[300px] lg:min-h-0'
         }`}
       >
         {slide.illustration && (
@@ -108,7 +108,7 @@ export const VisualPanoramaSlideBody: React.FC<{
         {epochs.length > 0 && (
           <div
             className={`relative z-20 grid ${gridColsClass} ${
-              staticPrint ? 'gap-2 p-2.5' : 'gap-2.5 xl:gap-3.5 p-3.5 sm:p-4 xl:p-5'
+              staticPrint ? 'gap-2 p-2.5' : 'gap-2 xl:gap-3 p-2.5 sm:p-3 xl:p-3.5'
             }`}
           >
             {epochs.map((ep, idx) => {
@@ -117,24 +117,24 @@ export const VisualPanoramaSlideBody: React.FC<{
               const isDimmed = hasSpotlight && idx !== activeEpochIdx;
 
               const cardClasses = `text-left rounded-xl backdrop-blur-md border transition-all duration-200 ${
-                staticPrint ? 'px-3 py-2.5 bg-[#060a16]/85' : 'px-3.5 py-3 xl:px-4 xl:py-3.5 bg-[#060a16]/80'
+                staticPrint ? 'px-3 py-2.5 bg-[#060a16]/85' : 'px-3 py-2 xl:px-3.5 xl:py-2.5 bg-[#060a16]/82'
               } ${isSelected ? style.activeBorder : style.border} ${
                 isDimmed ? 'opacity-55 hover:opacity-95' : 'opacity-100'
               }`;
 
               const content = (
                 <>
-                  <div className="flex items-center justify-between gap-2 font-mono mb-1">
+                  <div className="flex items-center justify-between gap-2 font-mono mb-0.5">
                     <span
                       className={`font-bold uppercase tracking-wider ${
-                        staticPrint ? 'text-xs' : 'text-sm xl:text-base'
+                        staticPrint ? 'text-xs' : 'text-xs xl:text-sm'
                       } ${style.badge}`}
                     >
                       {ep.step}
                     </span>
                     <span
                       className={`text-slate-300 truncate ${
-                        staticPrint ? 'text-xs' : 'text-xs sm:text-sm xl:text-[15px]'
+                        staticPrint ? 'text-xs' : 'text-[11px] sm:text-xs xl:text-[13px]'
                       }`}
                     >
                       {ep.era}
@@ -144,16 +144,16 @@ export const VisualPanoramaSlideBody: React.FC<{
                     className={`font-extrabold text-white leading-tight ${
                       staticPrint
                         ? 'text-[17px]'
-                        : 'text-base sm:text-lg xl:text-[1.32rem] 2xl:text-[1.48rem]'
+                        : 'text-sm sm:text-base xl:text-[1.1rem] 2xl:text-[1.22rem]'
                     }`}
                   >
                     {ep.label}
                   </div>
                   <p
-                    className={`text-slate-100 leading-snug mt-1 ${
+                    className={`text-slate-100 leading-snug mt-0.5 ${
                       staticPrint
                         ? 'text-[13.5px]'
-                        : 'text-sm sm:text-[15px] xl:text-[1.04rem] 2xl:text-[1.14rem]'
+                        : 'text-xs sm:text-[13px] xl:text-[0.9rem] 2xl:text-[0.98rem]'
                     }`}
                   >
                     {ep.insight}
@@ -186,24 +186,24 @@ export const VisualPanoramaSlideBody: React.FC<{
 
       {/* Full-Width Core Architectural Thesis Footer Bar */}
       <div
-        className={`shrink-0 rounded-2xl bg-gradient-to-r from-slate-900/95 via-slate-950/95 to-cyan-950/30 border border-cyan-500/40 shadow-lg flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 ${
-          staticPrint ? 'px-5 py-3' : 'px-5 py-3.5 xl:px-6 xl:py-4'
+        className={`shrink-0 rounded-2xl bg-gradient-to-r from-slate-900/95 via-slate-950/95 to-cyan-950/30 border border-cyan-500/40 shadow-lg flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2.5 ${
+          staticPrint ? 'px-5 py-3' : 'px-4 py-2.5 xl:px-5 xl:py-3'
         }`}
       >
         <div className="min-w-0">
           <div
-            className={`font-mono font-bold uppercase tracking-widest text-emerald-300 flex items-center gap-2 mb-1 ${
-              staticPrint ? 'text-xs' : 'text-sm xl:text-base'
+            className={`font-mono font-bold uppercase tracking-widest text-emerald-300 flex items-center gap-2 mb-0.5 ${
+              staticPrint ? 'text-xs' : 'text-xs xl:text-[13px]'
             }`}
           >
-            <Sparkles className={staticPrint ? 'w-3.5 h-3.5 shrink-0' : 'w-4 h-4 shrink-0'} />
+            <Sparkles className="w-3.5 h-3.5 shrink-0" />
             Core Architectural Thesis
           </div>
           <p
             className={`whitespace-pre-line font-normal text-slate-50 leading-snug ${
               staticPrint
                 ? 'text-[18px]'
-                : 'text-lg sm:text-xl lg:text-[1.32rem] xl:text-[1.48rem] 2xl:text-[1.62rem]'
+                : 'text-base sm:text-lg lg:text-[1.08rem] xl:text-[1.2rem] 2xl:text-[1.3rem]'
             }`}
           >
             {slide.keyTakeaway}
@@ -212,7 +212,7 @@ export const VisualPanoramaSlideBody: React.FC<{
 
         {!staticPrint && epochs.length > 0 && (
           <div className="shrink-0 hidden xl:flex items-center gap-2">
-            <span className="px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/80 font-mono text-sm text-slate-200">
+            <span className="px-3 py-1 rounded-xl bg-slate-900/90 border border-slate-700/80 font-mono text-xs text-slate-200">
               {hasSpotlight
                 ? 'Click era or press 0 to show all'
                 : `Click era or press 1–${epochs.length} to spotlight`}

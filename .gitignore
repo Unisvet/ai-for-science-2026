@@ -1,0 +1,42 @@
+# Environment & Secrets (NEVER commit real credentials)
+.env
+.env.local
+.env.*.local
+web/.env
+web/.env.local
+*.pem
+*service-account*.json
+
+# Private local docs, speaker notes, workspace agent configs & local-only media
+doc/
+.agents/
+AGENTS.md
+web/src/data/*.local.ts
+*.local.mp3
+*.local.wav
+*.local.ogg
+
+# Live AlphaEvolve run outputs (contain GCP project numbers, engine IDs & local paths)
+demos/**/outputs/
+demos/**/Figure_*.png
+local_outputs/
+
+# Node / Web / TypeScript Build Artifacts
+node_modules/
+web/node_modules/
+web/dist/
+.vite/
+*.tsbuildinfo
+
+# Python / Virtual Environments
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# OS & Editor Artifacts
+.DS_Store
+Thumbs.db
+*.log

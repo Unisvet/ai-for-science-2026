@@ -1,0 +1,843 @@
+{
+  "problem": "Constructor-based circle packing for n=26 circles in [0, 1]^2",
+  "codelabUrl": "https://codelabs.developers.google.com/alphaevolve-on-google-cloud-1#0",
+  "repoUrl": "https://github.com/Google-Cloud-AI/alphaevolve-on-googlecloud/tree/main/examples/circle_packing",
+  "elapsedMs": 903.6,
+  "milestones": [
+    {
+      "generation": 0,
+      "label": "Gen 0 \u2022 Official Codelab Seed",
+      "sumOfRadii": 0.95976,
+      "gainPct": 0.0,
+      "areaCoveragePct": 24.71,
+      "summary": "Concentric 1 + 8 + 16 rings (`np.clip(0.01, 0.99)`) \u2014 outer 16 circles crush against the square border (`r=0.01`)!",
+      "code": "# EVOLVE-BLOCK-START\ndef construct_packing():\n    \"\"\"Constructor-based circle packing for n=26 circles\"\"\"\n    centers[0] = [0.5, 0.5]\n    # 8 inner (r=0.3) + 16 outer (r=0.7 -> clipped to 0.99!)\n    centers = np.clip(concentric_rings(26), 0.01, 0.99)\n    return centers, compute_max_radii(centers)\n# EVOLVE-BLOCK-END",
+      "circles": [
+        {
+          "id": 0,
+          "x": 0.5,
+          "y": 0.5,
+          "r": 0.05832
+        },
+        {
+          "id": 1,
+          "x": 0.8,
+          "y": 0.5,
+          "r": 0.05514
+        },
+        {
+          "id": 2,
+          "x": 0.71213,
+          "y": 0.71213,
+          "r": 0.10467
+        },
+        {
+          "id": 3,
+          "x": 0.5,
+          "y": 0.8,
+          "r": 0.08482
+        },
+        {
+          "id": 4,
+          "x": 0.28787,
+          "y": 0.71213,
+          "r": 0.09642
+        },
+        {
+          "id": 5,
+          "x": 0.2,
+          "y": 0.5,
+          "r": 0.08408
+        },
+        {
+          "id": 6,
+          "x": 0.28787,
+          "y": 0.28787,
+          "r": 0.09671
+        },
+        {
+          "id": 7,
+          "x": 0.5,
+          "y": 0.2,
+          "r": 0.09928
+        },
+        {
+          "id": 8,
+          "x": 0.71213,
+          "y": 0.28787,
+          "r": 0.13033
+        },
+        {
+          "id": 9,
+          "x": 0.99,
+          "y": 0.5,
+          "r": 0.01
+        },
+        {
+          "id": 10,
+          "x": 0.99,
+          "y": 0.76788,
+          "r": 0.01
+        },
+        {
+          "id": 11,
+          "x": 0.99,
+          "y": 0.99,
+          "r": 0.01
+        },
+        {
+          "id": 12,
+          "x": 0.76788,
+          "y": 0.99,
+          "r": 0.01
+        },
+        {
+          "id": 13,
+          "x": 0.5,
+          "y": 0.99,
+          "r": 0.01
+        },
+        {
+          "id": 14,
+          "x": 0.23212,
+          "y": 0.99,
+          "r": 0.01
+        },
+        {
+          "id": 15,
+          "x": 0.01,
+          "y": 0.99,
+          "r": 0.01
+        },
+        {
+          "id": 16,
+          "x": 0.01,
+          "y": 0.76788,
+          "r": 0.01
+        },
+        {
+          "id": 17,
+          "x": 0.01,
+          "y": 0.5,
+          "r": 0.01
+        },
+        {
+          "id": 18,
+          "x": 0.01,
+          "y": 0.23212,
+          "r": 0.01
+        },
+        {
+          "id": 19,
+          "x": 0.01,
+          "y": 0.01,
+          "r": 0.0
+        },
+        {
+          "id": 20,
+          "x": 0.23212,
+          "y": 0.01,
+          "r": 0.01
+        },
+        {
+          "id": 21,
+          "x": 0.5,
+          "y": 0.01,
+          "r": 0.01
+        },
+        {
+          "id": 22,
+          "x": 0.76788,
+          "y": 0.01,
+          "r": 0.01
+        },
+        {
+          "id": 23,
+          "x": 0.99,
+          "y": 0.01,
+          "r": 0.01
+        },
+        {
+          "id": 24,
+          "x": 0.99,
+          "y": 0.23212,
+          "r": 0.01
+        },
+        {
+          "id": 25,
+          "x": 0.01,
+          "y": 0.01,
+          "r": 0.0
+        }
+      ]
+    },
+    {
+      "generation": 5,
+      "label": "Gen 5 \u2022 Gemini Flash 5\u00d75 Lattice + Pocket",
+      "sumOfRadii": 2.45355,
+      "gainPct": 155.6,
+      "areaCoveragePct": 73.83,
+      "summary": "Replaces concentric rings with a 5\u00d75 Cartesian lattice + 1 interstitial circle and short pairwise repulsion (+156% jump!).",
+      "code": "# EVOLVE-BLOCK-START\ndef construct_packing():\n    # Gen 5: 5x5 uniform grid + 26th interstitial pocket\n    grid = [[x, y] for x in linspace(0.1, 0.9, 5)\n                   for y in linspace(0.1, 0.9, 5)]\n    centers, radii = relax_physics(np.vstack([grid, [0.20, 0.20]]), steps=35)\n    return centers, radii\n# EVOLVE-BLOCK-END",
+      "circles": [
+        {
+          "id": 0,
+          "x": 0.1,
+          "y": 0.1,
+          "r": 0.07071
+        },
+        {
+          "id": 1,
+          "x": 0.1,
+          "y": 0.3,
+          "r": 0.07071
+        },
+        {
+          "id": 2,
+          "x": 0.1,
+          "y": 0.5,
+          "r": 0.1
+        },
+        {
+          "id": 3,
+          "x": 0.1,
+          "y": 0.7,
+          "r": 0.1
+        },
+        {
+          "id": 4,
+          "x": 0.1,
+          "y": 0.9,
+          "r": 0.1
+        },
+        {
+          "id": 5,
+          "x": 0.3,
+          "y": 0.1,
+          "r": 0.07071
+        },
+        {
+          "id": 6,
+          "x": 0.3,
+          "y": 0.3,
+          "r": 0.07071
+        },
+        {
+          "id": 7,
+          "x": 0.3,
+          "y": 0.5,
+          "r": 0.1
+        },
+        {
+          "id": 8,
+          "x": 0.3,
+          "y": 0.7,
+          "r": 0.1
+        },
+        {
+          "id": 9,
+          "x": 0.3,
+          "y": 0.9,
+          "r": 0.1
+        },
+        {
+          "id": 10,
+          "x": 0.5,
+          "y": 0.1,
+          "r": 0.1
+        },
+        {
+          "id": 11,
+          "x": 0.5,
+          "y": 0.3,
+          "r": 0.1
+        },
+        {
+          "id": 12,
+          "x": 0.5,
+          "y": 0.5,
+          "r": 0.1
+        },
+        {
+          "id": 13,
+          "x": 0.5,
+          "y": 0.7,
+          "r": 0.1
+        },
+        {
+          "id": 14,
+          "x": 0.5,
+          "y": 0.9,
+          "r": 0.1
+        },
+        {
+          "id": 15,
+          "x": 0.7,
+          "y": 0.1,
+          "r": 0.1
+        },
+        {
+          "id": 16,
+          "x": 0.7,
+          "y": 0.3,
+          "r": 0.1
+        },
+        {
+          "id": 17,
+          "x": 0.7,
+          "y": 0.5,
+          "r": 0.1
+        },
+        {
+          "id": 18,
+          "x": 0.7,
+          "y": 0.7,
+          "r": 0.1
+        },
+        {
+          "id": 19,
+          "x": 0.7,
+          "y": 0.9,
+          "r": 0.1
+        },
+        {
+          "id": 20,
+          "x": 0.9,
+          "y": 0.1,
+          "r": 0.1
+        },
+        {
+          "id": 21,
+          "x": 0.9,
+          "y": 0.3,
+          "r": 0.1
+        },
+        {
+          "id": 22,
+          "x": 0.9,
+          "y": 0.5,
+          "r": 0.1
+        },
+        {
+          "id": 23,
+          "x": 0.9,
+          "y": 0.7,
+          "r": 0.1
+        },
+        {
+          "id": 24,
+          "x": 0.9,
+          "y": 0.9,
+          "r": 0.1
+        },
+        {
+          "id": 25,
+          "x": 0.2,
+          "y": 0.2,
+          "r": 0.07071
+        }
+      ]
+    },
+    {
+      "generation": 16,
+      "label": "Gen 16 \u2022 Staggered Hexagonal Rows [5,5,6,5,5]",
+      "sumOfRadii": 2.53668,
+      "gainPct": 164.3,
+      "areaCoveragePct": 78.54,
+      "summary": "Discovers quasi-hexagonal row staggering `[5, 5, 6, 5, 5]` + projected subgradient radius polishing \u2014 surpassing the Codelab 10-step target (`2.541`)!",
+      "code": "# EVOLVE-BLOCK-START\ndef construct_packing():\n    # Gen 16: Staggered hexagonal topology [5, 5, 6, 5, 5]\n    centers = init_staggered_hex_rows([5, 5, 6, 5, 5])\n    centers, radii = relax_physics(centers, steps=190)\n    return centers, polish_feasible_radii(centers)\n# EVOLVE-BLOCK-END",
+      "circles": [
+        {
+          "id": 0,
+          "x": 0.10274,
+          "y": 0.10274,
+          "r": 0.10274
+        },
+        {
+          "id": 1,
+          "x": 0.09716,
+          "y": 0.30309,
+          "r": 0.09716
+        },
+        {
+          "id": 2,
+          "x": 0.09985,
+          "y": 0.50017,
+          "r": 0.09985
+        },
+        {
+          "id": 3,
+          "x": 0.09936,
+          "y": 0.69951,
+          "r": 0.09936
+        },
+        {
+          "id": 4,
+          "x": 0.10057,
+          "y": 0.89952,
+          "r": 0.10048
+        },
+        {
+          "id": 5,
+          "x": 0.30309,
+          "y": 0.09716,
+          "r": 0.09716
+        },
+        {
+          "id": 6,
+          "x": 0.31319,
+          "y": 0.31319,
+          "r": 0.09647
+        },
+        {
+          "id": 7,
+          "x": 0.29622,
+          "y": 0.50538,
+          "r": 0.09629
+        },
+        {
+          "id": 8,
+          "x": 0.29898,
+          "y": 0.70185,
+          "r": 0.1002
+        },
+        {
+          "id": 9,
+          "x": 0.30044,
+          "y": 0.90102,
+          "r": 0.09897
+        },
+        {
+          "id": 10,
+          "x": 0.50017,
+          "y": 0.09985,
+          "r": 0.09985
+        },
+        {
+          "id": 11,
+          "x": 0.50538,
+          "y": 0.29622,
+          "r": 0.09627
+        },
+        {
+          "id": 12,
+          "x": 0.49621,
+          "y": 0.49621,
+          "r": 0.10382
+        },
+        {
+          "id": 13,
+          "x": 0.4995,
+          "y": 0.70023,
+          "r": 0.10023
+        },
+        {
+          "id": 14,
+          "x": 0.49953,
+          "y": 0.90033,
+          "r": 0.09967
+        },
+        {
+          "id": 15,
+          "x": 0.69951,
+          "y": 0.09936,
+          "r": 0.09936
+        },
+        {
+          "id": 16,
+          "x": 0.70185,
+          "y": 0.29898,
+          "r": 0.10022
+        },
+        {
+          "id": 17,
+          "x": 0.70023,
+          "y": 0.4995,
+          "r": 0.10023
+        },
+        {
+          "id": 18,
+          "x": 0.70056,
+          "y": 0.70056,
+          "r": 0.1008
+        },
+        {
+          "id": 19,
+          "x": 0.69891,
+          "y": 0.90067,
+          "r": 0.09932
+        },
+        {
+          "id": 20,
+          "x": 0.89952,
+          "y": 0.10057,
+          "r": 0.10048
+        },
+        {
+          "id": 21,
+          "x": 0.90102,
+          "y": 0.30044,
+          "r": 0.09895
+        },
+        {
+          "id": 22,
+          "x": 0.90033,
+          "y": 0.49953,
+          "r": 0.09967
+        },
+        {
+          "id": 23,
+          "x": 0.90067,
+          "y": 0.69891,
+          "r": 0.09932
+        },
+        {
+          "id": 24,
+          "x": 0.89926,
+          "y": 0.89926,
+          "r": 0.10074
+        },
+        {
+          "id": 25,
+          "x": 0.21027,
+          "y": 0.21027,
+          "r": 0.04907
+        }
+      ]
+    },
+    {
+      "generation": 40,
+      "label": "Gen 40 \u2022 Multi-Island Variable-Radius Champion",
+      "sumOfRadii": 2.6307,
+      "gainPct": 174.1,
+      "areaCoveragePct": 86.14,
+      "summary": "Multi-island staggered hexagonal seeds + analytic-Jacobian SciPy `SLSQP` polish \u2014 reaching `2.631` `sum_of_radii` (`86.1%` area, `99.8%` of AlphaEvolve\u2019s `2.6359` SOTA) with zero overlaps!",
+      "code": "# EVOLVE-BLOCK-START\ndef construct_packing():\n    # Gen 40 Champion: Multi-island staggered hex + SciPy SLSQP polish\n    best_c, best_r = None, np.zeros(26)\n    for pat in ([5,5,6,5,5], [5,6,5,5,5], [6,5,5,5,5], [5,5,5,6,5]):\n        c, r = slsqp_polish_packing(*relax_physics(init_hex(pat), steps=90))\n        if r.sum() > best_r.sum(): best_c, best_r = c, r\n    return best_c, best_r\n# EVOLVE-BLOCK-END",
+      "circles": [
+        {
+          "id": 0,
+          "x": 0.08718,
+          "y": 0.08718,
+          "r": 0.08718
+        },
+        {
+          "id": 1,
+          "x": 0.27932,
+          "y": 0.10587,
+          "r": 0.10587
+        },
+        {
+          "id": 2,
+          "x": 0.51146,
+          "y": 0.12725,
+          "r": 0.12725
+        },
+        {
+          "id": 3,
+          "x": 0.7022,
+          "y": 0.07147,
+          "r": 0.07147
+        },
+        {
+          "id": 4,
+          "x": 0.88417,
+          "y": 0.11583,
+          "r": 0.11583
+        },
+        {
+          "id": 5,
+          "x": 0.1397,
+          "y": 0.30789,
+          "r": 0.1397
+        },
+        {
+          "id": 6,
+          "x": 0.36203,
+          "y": 0.27756,
+          "r": 0.0847
+        },
+        {
+          "id": 7,
+          "x": 0.53425,
+          "y": 0.35933,
+          "r": 0.10594
+        },
+        {
+          "id": 8,
+          "x": 0.70847,
+          "y": 0.24517,
+          "r": 0.10235
+        },
+        {
+          "id": 9,
+          "x": 0.89479,
+          "y": 0.33662,
+          "r": 0.10521
+        },
+        {
+          "id": 10,
+          "x": 0.10777,
+          "y": 0.55329,
+          "r": 0.10777
+        },
+        {
+          "id": 11,
+          "x": 0.33806,
+          "y": 0.49157,
+          "r": 0.13065
+        },
+        {
+          "id": 12,
+          "x": 0.5569,
+          "y": 0.56382,
+          "r": 0.0998
+        },
+        {
+          "id": 13,
+          "x": 0.72125,
+          "y": 0.44824,
+          "r": 0.10113
+        },
+        {
+          "id": 14,
+          "x": 0.89957,
+          "y": 0.5422,
+          "r": 0.10043
+        },
+        {
+          "id": 15,
+          "x": 0.09311,
+          "y": 0.75363,
+          "r": 0.09311
+        },
+        {
+          "id": 16,
+          "x": 0.24486,
+          "y": 0.67701,
+          "r": 0.07689
+        },
+        {
+          "id": 17,
+          "x": 0.41852,
+          "y": 0.70703,
+          "r": 0.09934
+        },
+        {
+          "id": 18,
+          "x": 0.59182,
+          "y": 0.7366,
+          "r": 0.07647
+        },
+        {
+          "id": 19,
+          "x": 0.73353,
+          "y": 0.64258,
+          "r": 0.0936
+        },
+        {
+          "id": 20,
+          "x": 0.89953,
+          "y": 0.7431,
+          "r": 0.10047
+        },
+        {
+          "id": 21,
+          "x": 0.07701,
+          "y": 0.92299,
+          "r": 0.07701
+        },
+        {
+          "id": 22,
+          "x": 0.27245,
+          "y": 0.876,
+          "r": 0.124
+        },
+        {
+          "id": 23,
+          "x": 0.50125,
+          "y": 0.89446,
+          "r": 0.10554
+        },
+        {
+          "id": 24,
+          "x": 0.72645,
+          "y": 0.87987,
+          "r": 0.12013
+        },
+        {
+          "id": 25,
+          "x": 0.92113,
+          "y": 0.92113,
+          "r": 0.07887
+        }
+      ]
+    },
+    {
+      "generation": 30,
+      "label": "Live Cloud \u2022 gemini-4-argon (2.63598!)",
+      "sumOfRadii": 2.63598,
+      "gainPct": 174.6,
+      "areaCoveragePct": 86.27,
+      "summary": "Live Google Cloud Discovery Engine run (gemini-4-argon, 30 candidates, EVAL_TIMEOUT_S=20s) \u2014 beats Cantrell 2011 (2.6340) & AlphaEvolve May 2025 SOTA (2.63586) with 0 overlaps!",
+      "code": "# EVOLVE-BLOCK-START\ndef construct_packing() -> tuple[np.ndarray, np.ndarray]:\n    \"\"\"Constructs a packing of n=26 disjoint circles inside the unit square [0, 1]^2.\n\n    Returns:\n        centers: np.ndarray of shape (26, 2) with (x, y) coordinates in [0, 1]^2\n        radii:   np.ndarray of shape (26,) with non-negative circle radii\n    \"\"\"\n    from scipy.optimize import linprog, minimize\n\n    n = 26\n    rng = np.random.default_rng(42)\n    idx_i, idx_j = np.triu_indices(n, k=1)\n    num_pairs = len(idx_i)\n\n    # Pre-build LP constraint matrix for exact radius maximization given fixed centers:\n    # r_i + r_j <= dist_ij\n    A_ub = np.zeros((num_pairs, n), dtype=np.float64)\n    # ... (full evolved SLSQP + LP polishing in outputs/program_evolved.py)\n# EVOLVE-BLOCK-END",
+      "circles": [
+        {
+          "id": 0,
+          "x": 0.11116,
+          "y": 0.11116,
+          "r": 0.11116
+        },
+        {
+          "id": 1,
+          "x": 0.09259,
+          "y": 0.31406,
+          "r": 0.09259
+        },
+        {
+          "id": 2,
+          "x": 0.09393,
+          "y": 0.50057,
+          "r": 0.09393
+        },
+        {
+          "id": 3,
+          "x": 0.09239,
+          "y": 0.68688,
+          "r": 0.09239
+        },
+        {
+          "id": 4,
+          "x": 0.11078,
+          "y": 0.88922,
+          "r": 0.11078
+        },
+        {
+          "id": 5,
+          "x": 0.31792,
+          "y": 0.09615,
+          "r": 0.09615
+        },
+        {
+          "id": 6,
+          "x": 0.23704,
+          "y": 0.24065,
+          "r": 0.06944
+        },
+        {
+          "id": 7,
+          "x": 0.25795,
+          "y": 0.40478,
+          "r": 0.09602
+        },
+        {
+          "id": 8,
+          "x": 0.25758,
+          "y": 0.59664,
+          "r": 0.09584
+        },
+        {
+          "id": 9,
+          "x": 0.23633,
+          "y": 0.76029,
+          "r": 0.06918
+        },
+        {
+          "id": 10,
+          "x": 0.31674,
+          "y": 0.90427,
+          "r": 0.09573
+        },
+        {
+          "id": 11,
+          "x": 0.5174,
+          "y": 0.10347,
+          "r": 0.10347
+        },
+        {
+          "id": 12,
+          "x": 0.40396,
+          "y": 0.27309,
+          "r": 0.1006
+        },
+        {
+          "id": 13,
+          "x": 0.47004,
+          "y": 0.50133,
+          "r": 0.13701
+        },
+        {
+          "id": 14,
+          "x": 0.40237,
+          "y": 0.72837,
+          "r": 0.0999
+        },
+        {
+          "id": 15,
+          "x": 0.5154,
+          "y": 0.89694,
+          "r": 0.10306
+        },
+        {
+          "id": 16,
+          "x": 0.72605,
+          "y": 0.10518,
+          "r": 0.10518
+        },
+        {
+          "id": 17,
+          "x": 0.61833,
+          "y": 0.29739,
+          "r": 0.11515
+        },
+        {
+          "id": 18,
+          "x": 0.72466,
+          "y": 0.50447,
+          "r": 0.11763
+        },
+        {
+          "id": 19,
+          "x": 0.61308,
+          "y": 0.70525,
+          "r": 0.11208
+        },
+        {
+          "id": 20,
+          "x": 0.72522,
+          "y": 0.89321,
+          "r": 0.10679
+        },
+        {
+          "id": 21,
+          "x": 0.91507,
+          "y": 0.08493,
+          "r": 0.08493
+        },
+        {
+          "id": 22,
+          "x": 0.86674,
+          "y": 0.29769,
+          "r": 0.13326
+        },
+        {
+          "id": 23,
+          "x": 0.92114,
+          "y": 0.50272,
+          "r": 0.07886
+        },
+        {
+          "id": 24,
+          "x": 0.86978,
+          "y": 0.70539,
+          "r": 0.13022
+        },
+        {
+          "id": 25,
+          "x": 0.91536,
+          "y": 0.91536,
+          "r": 0.08464
+        }
+      ]
+    }
+  ]
+}

@@ -4,7 +4,7 @@ import { TPU_EVAL_ARCHITECTURES } from '../../data/demoTraces';
 import { FormattedText } from '../FormattedText';
 
 export const TpuEvalArchitecturesWidget: React.FC = () => {
-  const [selectedIdx, setSelectedIdx] = useState<number>(1); // Default Option B: Spot TPU VM
+  const [selectedIdx, setSelectedIdx] = useState<number>(0); // Default: Live Demo Colab v5e-1 TPU
   const current = TPU_EVAL_ARCHITECTURES[selectedIdx];
 
   return (

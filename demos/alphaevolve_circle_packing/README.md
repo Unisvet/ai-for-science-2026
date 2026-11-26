@@ -36,25 +36,43 @@ To push `best_score` higher and reduce wall-clock latency:
 4. **Richer Evaluator Insights (`evaluate.py`):** Feed back tightest circle pair, boundary slack, and per-candidate runtime so subsequent generations target geometric bottlenecks and avoid slow optimizers.
 5. **Per-Candidate Eval Timeout:** Cap slow SciPy runs (e.g., 15–20s) so a single candidate never stalls the worker pool.
 
-## 3. Run on a Spot Cloud TPU (Compare Local CPU vs. Cloud TPU)
+## 3. Run on a Cloud TPU (Slide 11 — Colab Free `v5e-1` or Spot `v6e-1` VM)
 
-Use the zero-leak Spot TPU wrapper [run_alphaevolve_spot_tpu.sh](../../scripts/run_alphaevolve_spot_tpu.sh) (in **Git Bash** or **WSL** on Windows) to provision an ephemeral Trillium `v6e-1` Spot TPU, run the experiment, copy outputs back to `./local_outputs`, and automatically delete the TPU VM via `trap`:
+Because `program.py` uses NumPy/SciPy (CPU-only), we also provide a **JAX TPU (`jax.jit` + `jax.vmap`) + 3-Tier Cascade Gate** implementation that genuinely accelerates `n=26` circle packing on TPU MXUs (relaxing 512+ parallel initializations simultaneously in a single persistent TPU process to avoid single-chip `libtpu` lock contention).
+
+### Option A: Google Colab Notebook with Free `v5e-1` TPU *(Recommended for Live Stage Demo)*
+
+Open [circle_packing_tpu_colab.ipynb](./circle_packing_tpu_colab.ipynb) in Google Colab:
+1. Select **Runtime → Change runtime type → `v5e-1` TPU** (\$0, ~20 s startup, `jax[tpu]` preinstalled).
+2. Add `PROJECT_ID` and `GE_APP_ID` in **Colab Secrets** (left sidebar key icon) so credentials never appear on screen.
+3. Run all cells to:
+   - Verify `[TpuDevice(id=0, ...)]` and benchmark CPU vs. `jax.vmap` TPU throughput,
+   - Watch the **Slide 11 3-Tier Cascade Gate** catch a broken candidate in ~1 ms without touching the TPU,
+   - Authenticate keylessly via Colab ADC (`google.colab.auth.authenticate_user`) and run the live AlphaEvolve loop with inline `matplotlib` plots!
+
+### Option B: Ephemeral Spot `v6e-1` Trillium TPU VM (`scripts/run_alphaevolve_spot_tpu.sh`)
+
+Use the zero-leak Spot TPU wrapper [run_alphaevolve_spot_tpu.sh](../../scripts/run_alphaevolve_spot_tpu.sh) (in **Git Bash** or **WSL** on Windows) to provision an ephemeral Trillium `v6e-1` Spot TPU with `cloud-platform` API scopes, auto-bootstrap `jax[tpu]` + `alpha_evolve`, run the experiment, copy outputs back to `./local_outputs`, and automatically delete the TPU VM via `trap`:
 
 1. Set your TPU settings in `.env` (defaults shown):
    ```env
    GCP_TPU_ZONE=europe-west4-a   # Or asia-northeast1-b (APAC), us-east5-b (US)
    GCP_TPU_TYPE=v6e-1
    GCP_TPU_VERSION=v2-alpha-tpuv6e
+   GCP_TPU_BOOTSTRAP=true
    ```
 2. Launch from the **repo root**:
    ```bash
-   # Run the circle packing evolution loop on the Spot TPU VM:
-   bash scripts/run_alphaevolve_spot_tpu.sh ./demos ./local_outputs "python3 -m demos.alphaevolve_circle_packing.run_evolution"
+   # Fast Slide 11 JAX TPU benchmark & 3-Tier Gate verification on Spot v6e-1 (~10s after bootstrap):
+   bash scripts/run_alphaevolve_spot_tpu.sh ./demos ./local_outputs "python3 demos/alphaevolve_circle_packing/run_evolution_tpu.py --mode benchmark --output-dir ~/alphaevolve_workspace/outputs"
 
-   # Or run the JAX / TorchTPU 3-tier evaluator benchmark (default):
+   # Full live Cloud AlphaEvolve loop on Spot v6e-1 TPU:
+   bash scripts/run_alphaevolve_spot_tpu.sh ./demos ./local_outputs "python3 demos/alphaevolve_circle_packing/run_evolution_tpu.py --mode live --output-dir ~/alphaevolve_workspace/outputs"
+
+   # Or run the JAX / TorchTPU 3-tier evaluator demo (default):
    bash scripts/run_alphaevolve_spot_tpu.sh ./demos ./local_outputs
    ```
-3. **Compare Local CPU vs. Cloud TPU:** Run Step 2 locally and Step 3 on the Spot TPU with the same `MAX_PROGRAMS_EVALUATED` in `.env`, then compare evaluation throughput and latency per candidate.
+3. **Compare Local CPU vs. Cloud TPU:** Run `--mode benchmark` locally and on the Spot TPU (or Colab `v5e-1`) to compare `jax.vmap` throughput and per-candidate latency.
 
 ## 4. Fast Stage Time-Lapse (~1 second)
 

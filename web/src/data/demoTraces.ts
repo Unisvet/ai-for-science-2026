@@ -44,6 +44,22 @@ export const SWARM_TRACE_EVENTS: SwarmTraceEvent[] = [
 
 export const TPU_EVAL_ARCHITECTURES: TpuEvalArchOption[] = [
   {
+    id: 'colab-v5e-hybrid',
+    tierLabel: 'Live Demo • Colab v5e-1 TPU',
+    title: 'Hybrid Free Colab `v5e-1` TPU + `FP64` KKT Polish',
+    subtitle: '`circle_packing_tpu_colab.ipynb` — Beat SOTA (`2.63598`) on Candidate #1!',
+    concurrency: '`parallel_evaluation=False` (1-chip lock)',
+    costProfile: '$0 Free Colab v5e-1',
+    frameworkStack: 'JAX `jit`/`vmap` (FP32 MXU) + SciPy `linprog`/`SLSQP` (FP64)',
+    whenToUse:
+      'Live stage & attendee hands-on! Pure FP32 repulsion plateaus at `2.52`; hybrid `2,000×` TPU sweep + FP64 polish jumped seed → `2.6302` and hit `2.63598` on Candidate #1 (~17s: ~2s XLA + ~15s host polish).',
+    flowSteps: [
+      'Stage 1 (TPU MXU, <0.1s): `jax.jit(jax.vmap(...))` sweeps 2,000 topological basins in parallel',
+      'Stage 2 (Host CPU, ~15s): `FP64` HiGHS `linprog` + analytic-Jacobian `SLSQP` polishes top basins',
+      'Attendee Challenge: Tighten `<18s` budget, add asymmetric basins, or scale to 44-vCPU Spot `v6e-1`!',
+    ],
+  },
+  {
     id: 'local-cpu',
     tierLabel: 'Option A • Local Subprocess',
     title: 'Laptop / Workstation + Cloud Discovery Engine',

@@ -37,7 +37,7 @@ export const SLIDES_DATA: SlideDefinition[] = [
     subtitle: 'From Flint & Printing Presses to Autonomous Software & Self-Evolving Algorithms',
     layout: 'visual-panorama',
     keyTakeaway:
-      'Every scientific revolution arrived when humanity upgraded its tools — today, for the first time, our tools can write, test, and evolve *better versions of themselves*.',
+      'Every scientific revolution arrived when humanity upgraded its tools — today, for the first time, our tools can write, test, and evolve better versions of themselves.',
     bullets: [
       'Physical Leverage: Stone tools, levers, and steam engines amplified human muscle.',
       'Computational Leverage: Microprocessors and Cloud TPUs amplified mathematical speed by 10¹²×.',
@@ -389,17 +389,17 @@ export const SLIDES_DATA: SlideDefinition[] = [
     act: 'Epilogue • Happy New Year 2027',
     timeRange: '49:00 – 50:00',
     title: 'Happy New Year 2027: Stanisław Lem’s Prophecy Arrives',
-    subtitle: 'Golem XIV (2027) vs. Solaris (1961) — Choosing Verifiable Autoevolution',
+    subtitle: 'Golem XIV (2027) & Solaris (1961) — Two Possibilities, One Human Responsibility',
     keyTakeaway:
-      'In Stanisław Lem’s *Golem XIV*, the foreword is dated **2027** — the year a self-evolving intelligence rewrites its own logic yet still *converses with humanity*. Stepping into 2027, our engineering choice is clear: build **Golem-class verifiable autoevolution**, never an inscrutable **Solaris** black box.',
+      'In Stanisław Lem’s Golem XIV, the foreword is dated 2027. Neither Golem nor Solaris is an ideal — they are only imagined possibilities. Stepping into 2027, our engineering choice is to take responsibility: to explore the genuinely new, embrace the adventure, and learn boldly from every failure.',
     bullets: [
-      'Golem XIV (2027) • Dialogic Autoevolution: Rewrites its own algorithms (`AlphaEvolve` inside `# EVOLVE-BLOCK`) while staying legible — sharing readable Python/JAX diffs, proofs, and structured dialogue (`Antigravity` + `MCP`).',
-      'Solaris (1961) • The Inscrutable Ocean: Achieves superhuman physics mastery yet shares zero language, modular boundary, or inspectable equations — a warning against unverified black-box autonomy.',
-      'Our 2027 Engineering Wish: May every self-improving agent you build in 2027 be auditable, deterministic, and human-legible — advancing science together! ✨',
+      'Golem XIV (2027) • One Possibility: A self-evolving intelligence that rewrites its own logic and converses briefly before outgrowing human dialogue — reminding us to keep `# EVOLVE-BLOCK` diffs legible and human-reviewed.',
+      'Solaris (1961) • Another Possibility: Superhuman mastery with zero shared language or inspectable equations — reminding us never to surrender oversight to opaque black boxes.',
+      'Our 2027 Path • Responsibility & Adventure: Neither destiny is fixed. In 2027, let us build with responsibility, chase genuine scientific adventure, and turn every failure (`-inf`) into learning! ✨',
     ],
     metrics: [
-      { label: 'Lem’s Golem XIV', value: 'Foreword: 2027', accent: 'emerald' },
-      { label: 'Anti-Solaris Rule', value: 'Readable # EVOLVE-BLOCK', accent: 'cyan' },
+      { label: 'Lem’s 2027 Horizons', value: 'Golem XIV & Solaris', accent: 'purple' },
+      { label: 'Our Engineering Choice', value: 'Human Responsibility', accent: 'cyan' },
       { label: 'Wishing You', value: 'Happy New Year 2027!', accent: 'amber' },
     ],
     deepDiveTerms: ['alphaevolve', 'evolve-block', 'antigravity'],
@@ -407,7 +407,7 @@ export const SLIDES_DATA: SlideDefinition[] = [
     illustration: {
       src: 'media/slides/slide-13-lem-2027.png',
       alt: 'Cosmic 2027 midnight horizon contrasting an emerald-cyan crystalline Golem XIV bridge of readable light on the left with a swirling amber-crimson Solaris alien ocean on the right',
-      caption: 'Happy New Year 2027! • Build Transparent Golems, Never Silent Solari (Press I to Explore Lem’s Two Horizons)',
+      caption: 'Happy New Year 2027! • Responsibility, Scientific Adventure & Learning from Failure (Press I to Explore Lem’s Two Horizons)',
     },
   },
 ];

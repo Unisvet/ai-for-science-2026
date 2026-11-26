@@ -399,30 +399,30 @@ export const SlideDeckView: React.FC<{
               onSelectEpoch={setActiveEpochIdx}
             />
           ) : (
-          <div className="w-full flex-1 grid grid-cols-1 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,1.88fr)] gap-4 lg:gap-5 xl:gap-6 items-stretch min-h-0">
-            {/* Left Narrative Column (~37.3% balanced width for compact wrapping & crisp legibility) */}
-            <div className="flex flex-col justify-between gap-2.5 xl:gap-3 min-w-0 min-h-0">
-              <div className="flex-1 flex flex-col gap-2.5 xl:gap-3 min-h-0">
+          <div className="w-full flex-1 grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,2.1fr)] xl:grid-cols-[minmax(0,0.84fr)_minmax(0,2.16fr)] gap-4 lg:gap-5 items-stretch min-h-0">
+            {/* Left Narrative Column (~28–30% focused sidebar to maximize right 16:9 illustration & demos) */}
+            <div className="flex flex-col justify-between gap-2 xl:gap-2.5 min-w-0 min-h-0">
+              <div className="flex-1 flex flex-col gap-2 xl:gap-2.5 min-h-0">
                 {/* Core Architectural Thesis Callout */}
                 <div
                   className={`shrink-0 rounded-2xl bg-gradient-to-br from-slate-900/95 via-slate-950/95 to-cyan-950/25 border border-cyan-500/40 shadow-lg flex flex-col justify-center ${
                     slide.number === 1
-                      ? 'px-4 py-3 xl:px-4.5 xl:py-3.5'
-                      : 'px-3.5 py-2.5 sm:px-4 sm:py-3'
+                      ? 'px-3.5 py-2.5 xl:px-4 xl:py-3'
+                      : 'px-3.5 py-2.5'
                   }`}
                 >
-                  <div className="text-[11px] sm:text-xs xl:text-[13px] font-mono font-bold uppercase tracking-widest text-emerald-300 flex items-center gap-1.5 mb-1.5">
+                  <div className="text-[11px] xl:text-xs font-mono font-bold uppercase tracking-widest text-emerald-300 flex items-center gap-1.5 mb-1">
                     <Sparkles className="w-3.5 h-3.5 shrink-0" /> Core Architectural Thesis
                   </div>
                   <p
                     className={`whitespace-pre-line font-normal tracking-[-0.01em] ${
                       slide.number === 1
-                        ? 'text-base sm:text-lg lg:text-[1.12rem] xl:text-[1.24rem] 2xl:text-[1.36rem] text-white leading-[1.38] xl:leading-[1.42]'
+                        ? 'text-sm sm:text-base lg:text-[0.98rem] xl:text-[1.08rem] 2xl:text-[1.18rem] text-white leading-[1.36] xl:leading-[1.4]'
                         : isDenseSlide
-                          ? 'text-sm sm:text-[0.95rem] lg:text-[0.98rem] xl:text-[1.06rem] 2xl:text-[1.14rem] text-slate-50 leading-[1.36] xl:leading-[1.4]'
+                          ? 'text-xs sm:text-sm lg:text-[0.88rem] xl:text-[0.95rem] 2xl:text-[1.02rem] text-slate-50 leading-[1.35] xl:leading-[1.38]'
                           : isConciseSlide
-                            ? 'text-base sm:text-lg lg:text-[1.1rem] xl:text-[1.22rem] 2xl:text-[1.32rem] text-white leading-[1.4] xl:leading-[1.45]'
-                            : 'text-sm sm:text-base lg:text-[1.04rem] xl:text-[1.14rem] 2xl:text-[1.24rem] text-slate-50 leading-[1.38] xl:leading-[1.42]'
+                            ? 'text-sm sm:text-base lg:text-[0.98rem] xl:text-[1.06rem] 2xl:text-[1.15rem] text-white leading-[1.38] xl:leading-[1.42]'
+                            : 'text-xs sm:text-sm lg:text-[0.92rem] xl:text-[1.0rem] 2xl:text-[1.08rem] text-slate-50 leading-[1.36] xl:leading-[1.4]'
                     }`}
                   >
                     <FormattedText text={slide.keyTakeaway} />
@@ -430,7 +430,7 @@ export const SlideDeckView: React.FC<{
                 </div>
 
                 {/* Clean Non-Slop Typographic Stack (.points-stack) */}
-                <div className={`flex-1 flex flex-col min-h-0 ${isDenseSlide ? 'gap-2' : 'gap-2.5'}`}>
+                <div className={`flex-1 flex flex-col min-h-0 ${isDenseSlide ? 'gap-1.5' : 'gap-2'}`}>
                   {slide.bullets.map((b, i) => {
                     const { kicker, body } = parseBulletKicker(b);
                     const bodyLines = body.split('\n').filter(Boolean);
@@ -441,9 +441,9 @@ export const SlideDeckView: React.FC<{
                       <div
                         key={b}
                         className={`flex-1 flex ${
-                          bulletImage ? 'flex-row items-center gap-3' : 'flex-col justify-center'
+                          bulletImage ? 'flex-row items-center gap-2.5' : 'flex-col justify-center'
                         } rounded-xl border transition ${
-                          isDenseSlide || slide.number === 1 ? 'px-3.5 py-2 xl:px-4 xl:py-2.5' : 'px-3.5 py-2.5 xl:px-4 xl:py-3'
+                          isDenseSlide || slide.number === 1 ? 'px-3 py-2 xl:px-3.5 xl:py-2' : 'px-3 py-2 xl:px-3.5 xl:py-2.5'
                         } ${
                           isQuoteHighlight
                             ? 'bg-gradient-to-r from-purple-950/40 via-slate-900/70 to-emerald-950/30 border-purple-400/35 hover:border-purple-300/55'
@@ -454,7 +454,7 @@ export const SlideDeckView: React.FC<{
                           {kicker ? (
                             <>
                               <span
-                                className={`block font-mono font-semibold uppercase tracking-wider mb-1 text-[11px] sm:text-xs xl:text-[13px] ${kickerColorClass(i)}`}
+                                className={`block font-mono font-semibold uppercase tracking-wider mb-0.5 text-[10.5px] sm:text-[11px] xl:text-xs ${kickerColorClass(i)}`}
                               >
                                 {kicker}
                               </span>
@@ -463,9 +463,9 @@ export const SlideDeckView: React.FC<{
                                   {bodyLines.map((line) => (
                                     <li
                                       key={line}
-                                      className="flex items-start gap-2 text-sm sm:text-[0.95rem] lg:text-[0.96rem] xl:text-[1.04rem] 2xl:text-[1.12rem] font-normal text-slate-100 leading-snug"
+                                      className="flex items-start gap-2 text-xs sm:text-sm lg:text-[0.86rem] xl:text-[0.94rem] 2xl:text-[1.0rem] font-normal text-slate-100 leading-snug"
                                     >
-                                      <span className={`mt-2 w-1.5 h-1.5 rounded-full shrink-0 bg-current ${kickerColorClass(i)}`} />
+                                      <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 bg-current ${kickerColorClass(i)}`} />
                                       <span>
                                         <FormattedText text={line} />
                                       </span>
@@ -474,14 +474,14 @@ export const SlideDeckView: React.FC<{
                                 </ul>
                               ) : (
                                 <p
-                                  className={`font-normal leading-[1.38] xl:leading-[1.42] ${
+                                  className={`font-normal leading-[1.35] xl:leading-[1.38] ${
                                     isQuoteHighlight
-                                      ? 'text-sm lg:text-[0.92rem] xl:text-[1.0rem] 2xl:text-[1.08rem] text-purple-50'
+                                      ? 'text-xs lg:text-[0.84rem] xl:text-[0.9rem] 2xl:text-[0.98rem] text-purple-50'
                                       : isDenseSlide
-                                        ? 'text-sm lg:text-[0.92rem] xl:text-[1.0rem] 2xl:text-[1.06rem] text-slate-100'
+                                        ? 'text-xs lg:text-[0.84rem] xl:text-[0.9rem] 2xl:text-[0.96rem] text-slate-100'
                                         : isConciseSlide
-                                          ? 'text-sm sm:text-base lg:text-[1.02rem] xl:text-[1.1rem] 2xl:text-[1.18rem] text-slate-100'
-                                          : 'text-sm sm:text-base lg:text-[0.96rem] xl:text-[1.05rem] 2xl:text-[1.12rem] text-slate-100'
+                                          ? 'text-xs sm:text-sm lg:text-[0.9rem] xl:text-[0.98rem] 2xl:text-[1.05rem] text-slate-100'
+                                          : 'text-xs sm:text-sm lg:text-[0.86rem] xl:text-[0.94rem] 2xl:text-[1.0rem] text-slate-100'
                                   }`}
                                 >
                                   <FormattedText text={body} />
@@ -489,17 +489,17 @@ export const SlideDeckView: React.FC<{
                               )}
                             </>
                           ) : (
-                            <div className="flex items-start gap-2.5">
+                            <div className="flex items-start gap-2">
                               <span
-                                className={`font-mono text-sm font-semibold mt-0.5 shrink-0 ${kickerColorClass(i)}`}
+                                className={`font-mono text-xs font-semibold mt-0.5 shrink-0 ${kickerColorClass(i)}`}
                               >
                                 0{i + 1}
                               </span>
                               <p
-                                className={`font-normal leading-[1.38] xl:leading-[1.42] ${
+                                className={`font-normal leading-[1.35] xl:leading-[1.38] ${
                                   isConciseSlide
-                                    ? 'text-sm sm:text-base lg:text-[1.02rem] xl:text-[1.1rem] 2xl:text-[1.18rem] text-slate-100'
-                                    : 'text-sm sm:text-base lg:text-[0.96rem] xl:text-[1.05rem] 2xl:text-[1.12rem] text-slate-100'
+                                    ? 'text-xs sm:text-sm lg:text-[0.9rem] xl:text-[0.98rem] 2xl:text-[1.05rem] text-slate-100'
+                                    : 'text-xs sm:text-sm lg:text-[0.86rem] xl:text-[0.94rem] 2xl:text-[1.0rem] text-slate-100'
                                 }`}
                               >
                                 <FormattedText text={body} />
@@ -511,7 +511,7 @@ export const SlideDeckView: React.FC<{
                           <img
                             src={bulletImage.src}
                             alt={bulletImage.alt}
-                            className="h-16 sm:h-20 xl:h-24 w-auto max-w-[4.5rem] object-contain rounded-md border border-white/15 bg-slate-950/60 shadow-lg shadow-black/50 shrink-0"
+                            className="h-14 sm:h-16 xl:h-20 w-auto max-w-[3.75rem] object-contain rounded-md border border-white/15 bg-slate-950/60 shadow-lg shadow-black/50 shrink-0"
                           />
                         )}
                       </div>
@@ -620,7 +620,7 @@ export const SlideDeckView: React.FC<{
               </div>
             </div>
 
-            {/* Right Media / Interactive Demo / Illustration Column (~62.7% Golden Ratio) */}
+            {/* Right Media / Interactive Demo / Illustration Column (~70–72% Widescreen Showcase) */}
             <div className="flex flex-col min-h-[340px] lg:min-h-0 min-w-0">
               {slide.illustration && (
                 <div className="flex items-center justify-end gap-1.5 mb-1.5 shrink-0">
@@ -651,7 +651,7 @@ export const SlideDeckView: React.FC<{
 
               <div className="flex-1 flex flex-col justify-center min-h-0 w-full">
                 {slide.illustration && mediaTab === 'illustration' ? (
-                  <figure className="relative w-full h-full max-h-full my-auto flex items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-[#060911] shadow-[0_18px_42px_rgba(0,0,0,0.55)]">
+                  <figure className="relative w-full aspect-video max-h-full my-auto flex items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-[#060911] shadow-[0_18px_42px_rgba(0,0,0,0.55)]">
                     <img
                       src={slide.illustration.src}
                       alt={slide.illustration.alt}

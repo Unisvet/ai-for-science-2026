@@ -107,7 +107,7 @@ export const PrintPdfDeckView: React.FC<{
             {slide.layout === 'visual-panorama' ? (
               <VisualPanoramaSlideBody slide={slide} staticPrint />
             ) : (
-            <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-6 items-stretch my-auto py-3 flex-1 min-h-0">
+            <div className="grid grid-cols-[minmax(0,0.9fr)_minmax(0,2.1fr)] gap-5 items-stretch my-auto py-3 flex-1 min-h-0">
               <div className="flex flex-col justify-between gap-2.5 min-w-0">
                 <div className="flex-1 flex flex-col gap-2.5">
                   <div className="shrink-0 rounded-xl bg-slate-950 border border-cyan-500/40 p-4 flex flex-col justify-center">

@@ -51,7 +51,7 @@ export const QrCodeModal: React.FC<{
 
         <div className="p-4 rounded-2xl bg-white shadow-inner border border-slate-200">
           <img
-            src="/media/slides/qrcode_apac_devfest_2026.png"
+            src="./media/slides/qrcode_apac_devfest_2026.png"
             alt="QR Code for APAC AI for Science DevFest 2026 presentation"
             className="w-64 h-64 sm:w-72 sm:h-72 object-contain"
           />

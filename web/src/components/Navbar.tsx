@@ -7,6 +7,7 @@ import {
   PanelTopClose,
   Presentation,
   Printer,
+  QrCode,
   Volume2,
   VolumeX,
 } from 'lucide-react';
@@ -21,6 +22,7 @@ export const Navbar: React.FC<{
   onToggleSound: () => void;
   cinemaMode: boolean;
   onToggleCinemaMode: () => void;
+  onOpenQrCode: () => void;
 }> = ({
   activeView,
   onSelectView,
@@ -29,6 +31,7 @@ export const Navbar: React.FC<{
   soundEnabled,
   onToggleSound,
   onToggleCinemaMode,
+  onOpenQrCode,
 }) => {
   const tabs: { id: NavView; label: string; icon: React.ReactNode }[] = [
     { id: 'deck', label: 'Presentation Deck', icon: <Presentation className="w-3.5 h-3.5" /> },
@@ -99,6 +102,16 @@ export const Navbar: React.FC<{
               <span>Cinema (C)</span>
             </button>
           )}
+
+          <button
+            type="button"
+            onClick={onOpenQrCode}
+            title="Show Presentation QR Code (Shortcut: Q)"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] font-mono font-semibold bg-slate-900 text-slate-300 border border-slate-800 hover:border-cyan-500/40 hover:text-cyan-200 transition"
+          >
+            <QrCode className="w-3.5 h-3.5 text-cyan-300" />
+            <span className="hidden sm:inline">QR</span>
+          </button>
 
           <button
             type="button"

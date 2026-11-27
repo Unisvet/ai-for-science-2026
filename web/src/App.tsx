@@ -3,6 +3,7 @@ import { DemosLabView } from './components/DemosLabView';
 import { LearningResourcesHub } from './components/LearningResourcesHub';
 import { Navbar } from './components/Navbar';
 import { PrintPdfDeckView } from './components/PrintPdfDeckView';
+import { QrCodeModal } from './components/QrCodeModal';
 import { SlideDeckView } from './components/SlideDeckView';
 import { DemoExecutionMode, NavView } from './types/presentation';
 import { soundEngine } from './utils/soundEngine';
@@ -18,6 +19,7 @@ export const App: React.FC = () => {
   const [soundEnabled, setSoundEnabled] = useState<boolean>(false);
   const [cinemaMode, setCinemaMode] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [qrModalOpen, setQrModalOpen] = useState<boolean>(false);
 
   const toggleSound = () => {
     setSoundEnabled((prev) => {
@@ -54,6 +56,8 @@ export const App: React.FC = () => {
         setActiveView((v) => (v === 'pdf' ? 'deck' : 'pdf'));
       } else if (e.key.toLowerCase() === 'c' && !e.ctrlKey && !e.metaKey && !e.altKey) {
         setCinemaMode((c) => !c);
+      } else if (e.key.toLowerCase() === 'q' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        setQrModalOpen((o) => !o);
       }
     };
     window.addEventListener('keydown', onKey);
@@ -79,8 +83,11 @@ export const App: React.FC = () => {
           onToggleSound={toggleSound}
           cinemaMode={cinemaMode}
           onToggleCinemaMode={() => setCinemaMode((c) => !c)}
+          onOpenQrCode={() => setQrModalOpen(true)}
         />
       )}
+
+      <QrCodeModal open={qrModalOpen} onClose={() => setQrModalOpen(false)} />
 
       <main
         className={`flex-1 w-full flex flex-col ${
